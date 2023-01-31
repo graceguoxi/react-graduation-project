@@ -1,86 +1,83 @@
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import { visuallyHidden } from "@mui/utils";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import PropTypes from 'prop-types'
+import Box from '@mui/material/Box'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TablePagination from '@mui/material/TablePagination'
+import TableRow from '@mui/material/TableRow'
+import TableSortLabel from '@mui/material/TableSortLabel'
+import Paper from '@mui/material/Paper'
+import IconButton from '@mui/material/IconButton'
+import { visuallyHidden } from '@mui/utils'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-
+// function createData(name, calories, fat, carbs, protein) {
+//   return {
+//     name,
+//     calories,
+//     fat,
+//     carbs,
+//     protein,
+//   };
+// }
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
-    return -1;
+    return -1
   }
   if (b[orderBy] > a[orderBy]) {
-    return 1;
+    return 1
   }
-  return 0;
+  return 0
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+    : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
 const headCells = [
   {
-    id: "title",
+    id: 'title',
     numeric: false,
     disablePadding: true,
-    label: "Title",
+    label: 'Title'
   },
   {
-    id: "description",
+    id: 'description',
     numeric: true,
     disablePadding: false,
-    label: "Description",
+    label: 'Description'
   },
   {
-    id: "price",
+    id: 'price',
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: 'Price'
   },
   {
-    id: "image",
+    id: 'image',
     numeric: true,
     disablePadding: false,
-    label: "Image",
+    label: 'Image'
   },
   {
-    id: "actions",
+    id: 'actions',
     numeric: true,
     disablePadding: false,
-    label: "Actions",
-  },
-];
+    label: 'Actions'
+  }
+]
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort } = props
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+    onRequestSort(event, property)
+  }
 
   return (
     <TableHead>
@@ -88,19 +85,28 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
+            // align={headCell.numeric ? "right" : "left"}
+            align='center'
+            padding={
+              headCell.disablePadding ? 'none' : 'normal'
+            }
+            sortDirection={
+              orderBy === headCell.id ? order : false
+            }
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
+              direction={
+                orderBy === headCell.id ? order : 'asc'
+              }
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                <Box component='span' sx={visuallyHidden}>
+                  {order === 'desc'
+                    ? 'sorted descending'
+                    : 'sorted ascending'}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -108,55 +114,67 @@ function EnhancedTableHead(props) {
         ))}
       </TableRow>
     </TableHead>
-  );
+  )
 }
 
 EnhancedTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+  rowCount: PropTypes.number.isRequired
+}
 
 export default function EnhancedTable() {
   const [products, setProducts] = useState([])
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("calories");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  
+  const [order, setOrder] = useState('asc')
+  const [orderBy, setOrderBy] = useState('calories')
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+
   useEffect(() => {
-    axios.get("http://localhost:8000/api/products")
-    .then(res => {setProducts(res.data)})
-    .catch(err => console.log(err))
+    axios
+      .get('http://localhost:8000/api/products')
+      .then((res) => {
+        setProducts(res.data)
+      })
+      .catch((err) => console.log(err))
   }, [])
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
+    page > 0
+      ? Math.max(
+          0,
+          (1 + page) * rowsPerPage - products.length
+        )
+      : 0
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box sx={{ width: '88%', padding: '0 100px 0 100px' }}>
+      <Paper>
+
+      </Paper>
+      
+      <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
+            aria-labelledby='tableTitle'
           >
             <EnhancedTableHead
               order={order}
@@ -167,24 +185,37 @@ export default function EnhancedTable() {
             <TableBody>
               {products
                 .sort(getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
                 .map((row, index) => {
                   return (
                     <TableRow key={index}>
                       <TableCell
-                        component="th"
-                        scope="row"
-                        padding="none"
+                        align='center'
+                        component='th'
+                        scope='row'
+                        padding='none'
                       >
                         {row.title}
                       </TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.image}</TableCell>
-                      <TableCell align="right">{row.actions}</TableCell>
+                      <TableCell align='center'>
+                        {row.description}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {row.price}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {row.image}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {row.actions}
+                      </TableCell>
                     </TableRow>
-                  );
+                  )
                 })}
+
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
@@ -196,7 +227,7 @@ export default function EnhancedTable() {
 
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
-          component="div"
+          component='div'
           count={products.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -205,5 +236,5 @@ export default function EnhancedTable() {
         />
       </Paper>
     </Box>
-  );
+  )
 }
