@@ -29,8 +29,12 @@ const Login = () => {
         'react-project-user',
         JSON.stringify(res.data.user)
       )
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 500);
     })
-    .catch()
+    .catch(error => console.log(error))
   }
 
   return (

@@ -7,18 +7,16 @@ import InputBase from '@mui/material/InputBase'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useState } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
-import PersonAdd from '@mui/icons-material/PersonAdd'
-import Settings from '@mui/icons-material/Settings'
-import Logout from '@mui/icons-material/Logout'
-import ClearIcon from '@mui/icons-material/Clear'
-
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,13 +60,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }))
 
-export default function SearchAppBar({
-  keyWord,
-  onSearch,
-  auth,
-  logout,
-  user
-}) {
+
+export default function NavbarNew() {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -78,67 +71,23 @@ export default function SearchAppBar({
     setAnchorEl(null)
   }
 
-  const handleSearchChange = (e) => {
-    console.log('keyword', e.target.value)
-    onSearch(e.target.value)
-  }
-
-  const handleKeyUp = (e) => {
-    e.keyCode == 27 && onSearch('')
-  }
-
-  const handleClear = () => {
-    onSearch('')
-  }
-
-  const avatarStyle = { backgroundColor: '#2149e4' }
-  const visibleList = {
-    elevation: 0,
-    sx: {
-      overflow: 'visible',
-      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-      mt: 0.5,
-       '& .MuiAvatar-root': {
-         width: 32,
-         height: 32,
-         ml: -0.5,
-         mr: 1
-       },
-       '&:before': {
-         content: '""',
-         display: 'block',
-         position: 'absolute',
-         top: 0,
-         right: 14,
-         width: 10,
-         height: 10,
-         bgcolor: 'background.paper',
-         zIndex: 0
-       }
-    }
-  }
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
         <Toolbar>
           <IconButton
             onClick={handleClick}
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            sx={{ mr: 2 }}
+            size='small'
+            sx={{ ml: 2 }}
             aria-controls={
               open ? 'account-menu' : undefined
             }
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar
-              sx={{ width: 32, height: 32 }}
-              style={avatarStyle}
-            />
+            <Avatar sx={{ width: 32, height: 32 }}>
+              M
+            </Avatar>
           </IconButton>
 
           <Menu
@@ -147,7 +96,34 @@ export default function SearchAppBar({
             open={open}
             onClose={handleClose}
             onClick={handleClose}
-            PaperProps={visibleList}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: 'visible',
+                filter:
+                  'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                '& .MuiAvatar-root': {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1
+                },
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform:
+                    'translateY(-50%) rotate(45deg)',
+                  zIndex: 0
+                }
+              }
+            }}
             transformOrigin={{
               horizontal: 'right',
               vertical: 'top'
@@ -158,11 +134,10 @@ export default function SearchAppBar({
             }}
           >
             <MenuItem onClick={handleClose}>
-              <Avatar/>{user.email}
+              <Avatar /> Profile
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Avatar/>
-              My account
+              <Avatar /> My account
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClose}>
@@ -177,7 +152,7 @@ export default function SearchAppBar({
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem onClick={logout}>
+            <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <Logout fontSize='small' />
               </ListItemIcon>
@@ -196,29 +171,15 @@ export default function SearchAppBar({
           >
             Product Management
           </Typography>
-
-          <form>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                value={keyWord}
-                placeholder='Search…'
-                inputProps={{ 'aria-label': 'search' }}
-                onChange={handleSearchChange}
-                onKeyUp={handleKeyUp}
-              />
-              <IconButton
-                onClick={handleClear}
-                sx={{
-                  visibility: keyWord ? 'visible' : 'hidden'
-                }}
-              >
-                <ClearIcon />
-              </IconButton>
-            </Search>
-          </form>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder='Search…'
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
         </Toolbar>
       </AppBar>
     </Box>
