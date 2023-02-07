@@ -13,20 +13,13 @@ import IconButton from '@mui/material/IconButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import UploadIcon from '@mui/icons-material/Upload'
 import DownloadIcon from '@mui/icons-material/Download'
+import ModeIcon from '@mui/icons-material/Mode'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { visuallyHidden } from '@mui/utils'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button } from '@mui/material'
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return {
-//     name,
-//     calories,
-//     fat,
-//     carbs,
-//     protein,
-//   };
-// }
+import AddRow from './TableComponents/AddRow'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -135,10 +128,15 @@ export default function EnhancedTable({keyWord}) {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [origData, setOrigData] = useState([])
+  const [onAddRow, setOnAddRow] = useState(false)
  
   console.log('777', keyWord)
 
-
+   const avatarStyle = {
+     backgroundColor: '#2149e4',
+     color: 'white',
+     margin: '0 10px'
+   }
 
   useEffect(() => {
     axios
@@ -194,6 +192,8 @@ console.log('search',searchProducts)
           (1 + page) * rowsPerPage - products.length
         )
       : 0
+  
+  const addTableRow = () => setOnAddRow(!onAddRow)
 
   return (
     <>
@@ -204,7 +204,10 @@ console.log('search',searchProducts)
         }}
       >
         <Button>
-          <AddCircleIcon fontSize='large' />
+          <AddCircleIcon
+            fontSize='large'
+            onClick={addTableRow}
+          />
         </Button>
         <Button>
           <UploadIcon />
@@ -228,6 +231,8 @@ console.log('search',searchProducts)
                 rowCount={products.length}
               />
               <TableBody>
+                {onAddRow && <AddRow />}
+
                 {(searchProducts.length > 0
                   ? searchProducts
                   : products
@@ -259,13 +264,21 @@ console.log('search',searchProducts)
                         </TableCell>
                         <TableCell align='center'>
                           {row.actions}
+                          <IconButton style={avatarStyle}>
+                            <ModeIcon />
+                          </IconButton>
+                          <IconButton style={avatarStyle}>
+                            <DeleteIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     )
                   })}
 
                 {emptyRows > 0 && (
-                  <TableRow>
+                  <TableRow
+                    style={{ height: 53 * emptyRows }}
+                  >
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -287,6 +300,15 @@ console.log('search',searchProducts)
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
+
+          {(searchProducts.length > 0
+            ? searchProducts
+            : products
+          ).length === 0 && (
+            <div>
+              <h2>No Matching result</h2>
+            </div>
+          )}
         </Paper>
       </Box>
     </>

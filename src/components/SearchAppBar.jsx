@@ -18,6 +18,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import ClearIcon from '@mui/icons-material/Clear'
+import { useLocation } from 'react-router-dom'
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -118,72 +119,80 @@ export default function SearchAppBar({
     }
   }
 
+  const location = useLocation()
+  const isLoginPage = location.pathname.search('login') !== -1
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            onClick={handleClick}
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            sx={{ mr: 2 }}
-            aria-controls={
-              open ? 'account-menu' : undefined
-            }
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Avatar
-              sx={{ width: 32, height: 32 }}
-              style={avatarStyle}
-            />
-          </IconButton>
+          {!isLoginPage && (
+            <>
+              <IconButton
+                onClick={handleClick}
+                size='large'
+                edge='start'
+                color='inherit'
+                aria-label='open drawer'
+                sx={{ mr: 2 }}
+                aria-controls={
+                  open ? 'account-menu' : undefined
+                }
+                aria-haspopup='true'
+                aria-expanded={open ? 'true' : undefined}
+              >
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  style={avatarStyle}
+                />
+              </IconButton>
 
-          <Menu
-            anchorEl={anchorEl}
-            id='account-menu'
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
-            PaperProps={visibleList}
-            transformOrigin={{
-              horizontal: 'right',
-              vertical: 'top'
-            }}
-            anchorOrigin={{
-              horizontal: 'right',
-              vertical: 'bottom'
-            }}
-          >
-            <MenuItem onClick={handleClose}>
-              <Avatar/>{user.email}
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Avatar/>
-              My account
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <PersonAdd fontSize='small' />
-              </ListItemIcon>
-              Add another account
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Settings fontSize='small' />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
-            <MenuItem onClick={logout}>
-              <ListItemIcon>
-                <Logout fontSize='small' />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
-          </Menu>
+              <Menu
+                anchorEl={anchorEl}
+                id='account-menu'
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={visibleList}
+                transformOrigin={{
+                  horizontal: 'right',
+                  vertical: 'top'
+                }}
+                anchorOrigin={{
+                  horizontal: 'right',
+                  vertical: 'bottom'
+                }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Avatar />
+                  {user.email}
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Avatar />
+                  My account
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <PersonAdd fontSize='small' />
+                  </ListItemIcon>
+                  Add another account
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <Settings fontSize='small' />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem>
+                <MenuItem onClick={logout}>
+                  <ListItemIcon>
+                    <Logout fontSize='small' />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          )}
 
           <Typography
             variant='h6'
