@@ -130,7 +130,7 @@ export default function EnhancedTable({keyWord}) {
   const [origData, setOrigData] = useState([])
   const [onAddRow, setOnAddRow] = useState(false)
  
-  console.log('777', keyWord)
+  
 
    const avatarStyle = {
      backgroundColor: '#2149e4',
@@ -145,7 +145,7 @@ export default function EnhancedTable({keyWord}) {
         const data = res.data
         setOrigData(data)
         setProducts(data)
-        console.log('data', data)
+        // console.log('data', data)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -167,7 +167,7 @@ export default function EnhancedTable({keyWord}) {
     }))
     setPage(0)
   },[keyWord])
-console.log('search',searchProducts)
+// console.log('search',searchProducts)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -231,7 +231,9 @@ console.log('search',searchProducts)
                 rowCount={products.length}
               />
               <TableBody>
-                {onAddRow && <AddRow />}
+                {onAddRow && (
+                  <AddRow setOnAddRow={setOnAddRow} products={products} setProducts={setProducts} />
+                )}
 
                 {(searchProducts.length > 0
                   ? searchProducts
