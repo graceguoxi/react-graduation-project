@@ -14,6 +14,16 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     price: ''
   })
 
+  const [img, setImg] = useState('')
+  const [addUrl, setAddUrl] = useState()
+  const addImg = (e) => {
+    let imgFile = e.target.files[0]
+    let url = window.URL.createObjectURL(imgFile)
+    setAddUrl(url)
+    setImg(imgFile)
+  }
+    
+
   const handleAddFormChange = (e) => {
     e.preventDefault()
 
@@ -69,11 +79,24 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
         />
       </TableCell>
       <TableCell align='center'>
-        <IconButton>
-          <PhotoSizeSelectActualIcon
-            fontSize='large'
-            color='primary'
+        <IconButton
+          color='primary'
+          aria-label='upload picture'
+          component='label'
+        >
+          {addUrl ? (
+            <img src={addUrl} width='80' height='60' />
+          ) : (
+            ''
+          )}
+          <input
+            hidden
+            name='product_image'
+            type='file'
+            accept='image/*'
+            onChange={(e) => addImg(e)}
           />
+          <PhotoSizeSelectActualIcon fontSize='large' />
         </IconButton>
       </TableCell>
       <TableCell align='center'>
