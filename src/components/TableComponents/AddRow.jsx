@@ -1,5 +1,4 @@
 import { IconButton, TableCell, TableRow } from '@mui/material'
-import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
@@ -21,6 +20,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     let url = window.URL.createObjectURL(imgFile)
     setAddUrl(url)
     setImg(imgFile)
+    console.log('img',imgFile)
   }
     
 
@@ -85,7 +85,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
           component='label'
         >
           {addUrl ? (
-            <img src={addUrl} width='80' height='60' />
+            <img src={addUrl} width='80' height='60' alt='' />
           ) : (
             ''
           )}
@@ -94,7 +94,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
             name='product_image'
             type='file'
             accept='image/*'
-            onChange={(e) => addImg(e)}
+            onChange={addImg}
           />
           <PhotoSizeSelectActualIcon fontSize='large' />
         </IconButton>

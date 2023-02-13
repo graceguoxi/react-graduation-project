@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button } from '@mui/material'
 import AddRow from './TableComponents/AddRow'
+import EditableRow from './TableComponents/EditableRow'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -129,7 +130,7 @@ export default function EnhancedTable({keyWord}) {
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [origData, setOrigData] = useState([])
   const [onAddRow, setOnAddRow] = useState(false)
- 
+  const [editProductId, setEditProductId] = useState(null)
   
 
    const avatarStyle = {
@@ -195,6 +196,11 @@ export default function EnhancedTable({keyWord}) {
   
   const addTableRow = () => setOnAddRow(!onAddRow)
 
+  const handleEditClick = (e, product) => {
+    e.preventDefault()
+    setEditProductId(product.id)
+  }
+
   return (
     <>
       <Box
@@ -244,36 +250,47 @@ export default function EnhancedTable({keyWord}) {
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                  .map((row, index) => {
+                  .map((product, index) => {
                     return (
-                      <TableRow key={index}>
-                        <TableCell
-                          align='center'
-                          component='th'
-                          scope='row'
-                          padding='none'
-                        >
-                          {row.title}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {row.description}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {row.price}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {row.image}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {row.actions}
-                          <IconButton style={avatarStyle}>
-                            <ModeIcon />
-                          </IconButton>
-                          <IconButton style={avatarStyle}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
+                      <>
+                        {editProductId == product.id ? (
+                          <EditableRow />
+                        ) : (
+                          <TableRow key={index}>
+                            <TableCell
+                              align='center'
+                              component='th'
+                              scope='row'
+                              padding='none'
+                            >
+                              {product.title}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {product.description}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {product.price}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {product.image}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {product.actions}
+                              <IconButton
+                                style={avatarStyle}
+                                onClick={(e) => handleEditClick(e,product)}
+                              >
+                                <ModeIcon />
+                              </IconButton>
+                              <IconButton
+                                style={avatarStyle}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </>
                     )
                   })}
 
