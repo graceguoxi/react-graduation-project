@@ -131,6 +131,12 @@ export default function EnhancedTable({keyWord}) {
   const [origData, setOrigData] = useState([])
   const [onAddRow, setOnAddRow] = useState(false)
   const [editProductId, setEditProductId] = useState(null)
+  const [editFormData, setEditFormData] = useState({
+    id: '',
+    title: '',
+    description: '',
+    price: ''
+  })
   
 
    const avatarStyle = {
@@ -196,9 +202,45 @@ export default function EnhancedTable({keyWord}) {
   
   const addTableRow = () => setOnAddRow(!onAddRow)
 
+  const handleEditFormChange=(e) => {
+    e.preventDefault()
+
+    const fieldValue = e.target.value
+    setEditFormData((prevState) => ({...prevState, [e.target.name]: fieldValue}))
+  }
+
   const handleEditClick = (e, product) => {
     e.preventDefault()
     setEditProductId(product.id)
+
+    const formValues = {
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      price: product.price
+    }
+
+    setEditFormData(formValues)
+
+  }
+
+  const handleEditFormSubmit = (e) => {
+    e.preventDefault()
+
+    const editedProduct = {
+      id: editFormData.id,
+      title: editFormData.title,
+      description: editFormData.description,
+      price: editFormData.price
+    }
+
+    const newProducts = [...products]
+    const index = products.findIndex((product) => product.id === editFormData.id)
+
+    newProducts[index] = editedProduct
+
+    setProducts(newProducts)
+    setEditProductId(null)
   }
 
   return (
@@ -254,9 +296,19 @@ export default function EnhancedTable({keyWord}) {
                     return (
                       <>
                         {editProductId == product.id ? (
-                          <EditableRow />
+                          <EditableRow
+                            key={'edit' + index}
+                            product={product}
+                            editFormData={editFormData}
+                            handleEditFormChange={
+                              handleEditFormChange
+                            }
+                            handleEditFormSubmit={
+                              handleEditFormSubmit
+                            }
+                          />
                         ) : (
-                          <TableRow key={index}>
+                          <TableRow key={product.id}>
                             <TableCell
                               align='center'
                               component='th'
@@ -278,7 +330,12 @@ export default function EnhancedTable({keyWord}) {
                               {product.actions}
                               <IconButton
                                 style={avatarStyle}
-                                onClick={(e) => handleEditClick(e,product)}
+                                onClick={(e) =>
+                                  handleEditClick(
+                                    e,
+                                    product
+                                  )
+                                }
                               >
                                 <ModeIcon />
                               </IconButton>

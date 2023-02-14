@@ -4,7 +4,11 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from "react"
 
-const EditableRow = () => {
+const EditableRow = ({
+  editFormData,
+  handleEditFormChange,
+  handleEditFormSubmit
+}) => {
   const [image, setImage] = useState('')
   const [url, setUrl] = useState()
   const showImg = (e) => {
@@ -21,6 +25,8 @@ const EditableRow = () => {
           type='text'
           required={true}
           name='title'
+          defaultValue={editFormData.title}
+          onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -28,6 +34,8 @@ const EditableRow = () => {
           type='text'
           required={true}
           name='description'
+          defaultValue={editFormData.title}
+          onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -35,6 +43,8 @@ const EditableRow = () => {
           type='number'
           required={true}
           name='price'
+          defaultValue={editFormData.title}
+          onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -57,17 +67,14 @@ const EditableRow = () => {
       <TableCell align='center'>
         <IconButton
           type='submit'
-         
+          onClick={handleEditFormSubmit}
         >
           <CheckOutlinedIcon
             fontSize='large'
             color='primary'
           />
         </IconButton>
-        <IconButton
-          type='button'
-          
-        >
+        <IconButton type='button'>
           <ClearOutlinedIcon
             fontSize='large'
             color='primary'
