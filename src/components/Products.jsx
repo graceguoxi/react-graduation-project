@@ -21,6 +21,7 @@ import axios from 'axios'
 import { Button } from '@mui/material'
 import AddRow from './TableComponents/AddRow'
 import EditableRow from './TableComponents/EditableRow'
+import Notification from './TableComponents/Notification'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -131,13 +132,14 @@ export default function EnhancedTable({keyWord}) {
   const [origData, setOrigData] = useState([])
   const [onAddRow, setOnAddRow] = useState(false)
   const [editProductId, setEditProductId] = useState(null)
+  const [productId, setProductId] = useState()
+  const [open, setOpen] = useState(false)
   const [editFormData, setEditFormData] = useState({
     id: '',
     title: '',
     description: '',
-    price: ''
+    price: 0
   })
-  
 
    const avatarStyle = {
      backgroundColor: '#2149e4',
@@ -152,7 +154,7 @@ export default function EnhancedTable({keyWord}) {
         const data = res.data
         setOrigData(data)
         setProducts(data)
-        // console.log('data', data)
+        console.log('data', data)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -234,13 +236,68 @@ export default function EnhancedTable({keyWord}) {
       price: editFormData.price
     }
 
+    // const newProducts = [...products]
+    // const index = products.findIndex((product) => product.id === editFormData.id)
+
+    // newProducts[index] = editedProduct
+
+    // setProducts(newProducts)
+    // setEditProductId(null)
+
+    const userToken = localStorage.getItem(
+      'react-project-token'
+    )
+    let config = {
+      headers: {
+        Authorization: 'Bearer '  + userToken
+      }
+    }
+
+    axios
+      .put(
+        'http://localhost:8000/api/product/' +
+          editFormData.id,
+        editedProduct,
+        config
+      )
+      .then((res) => {
+        const newProducts = [...products]
+        console.log('newProducts', res.data)
+        const index = products.findIndex(
+          (product) => product.id === editFormData.id
+        )
+
+        newProducts[index] = res.data
+        setProducts(newProducts)
+        setEditProductId(null)
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const handleCancelClick = () => {
+    setEditProductId(null);
+  }
+
+  const handleDeleteClick = (productId) => {
     const newProducts = [...products]
-    const index = products.findIndex((product) => product.id === editFormData.id)
 
-    newProducts[index] = editedProduct
-
+    const index = products.findIndex(
+      (product) => product.id === productId
+    )
+    console.log('index', index)
+    newProducts.splice(index, 1)
     setProducts(newProducts)
-    setEditProductId(null)
+    console.log('newPro', newProducts)
+    handleClose()
+  }
+
+  const handleClickOpen = (id) => {
+    setOpen(true)
+    setProductId(id)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
@@ -280,7 +337,11 @@ export default function EnhancedTable({keyWord}) {
               />
               <TableBody>
                 {onAddRow && (
-                  <AddRow setOnAddRow={setOnAddRow} products={products} setProducts={setProducts} />
+                  <AddRow
+                    setOnAddRow={setOnAddRow}
+                    products={products}
+                    setProducts={setProducts}
+                  />
                 )}
 
                 {(searchProducts.length > 0
@@ -299,12 +360,15 @@ export default function EnhancedTable({keyWord}) {
                           <EditableRow
                             key={'edit' + index}
                             product={product}
-                            editFormData={editFormData}
+                            // editFormData={editFormData}
                             handleEditFormChange={
                               handleEditFormChange
                             }
                             handleEditFormSubmit={
                               handleEditFormSubmit
+                            }
+                            handleCancelClick={
+                              handleCancelClick
                             }
                           />
                         ) : (
@@ -341,6 +405,12 @@ export default function EnhancedTable({keyWord}) {
                               </IconButton>
                               <IconButton
                                 style={avatarStyle}
+                                // onClick={() =>handleDeleteClick(product.id)}
+                                onClick={() => {
+                                  handleClickOpen(
+                                    product.id
+                                  )
+                                }}
                               >
                                 <DeleteIcon />
                               </IconButton>
@@ -385,6 +455,13 @@ export default function EnhancedTable({keyWord}) {
               <h2>No Matching result</h2>
             </div>
           )}
+
+          <Notification
+            open={open}
+            handleClose={handleClose}
+            handleDeleteClick={handleDeleteClick}
+            productId={productId}
+          />
         </Paper>
       </Box>
     </>

@@ -5,17 +5,20 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from "react"
 
 const EditableRow = ({
+  product,
   editFormData,
   handleEditFormChange,
-  handleEditFormSubmit
+  handleEditFormSubmit,
+  handleCancelClick
 }) => {
   const [image, setImage] = useState('')
   const [url, setUrl] = useState()
   const showImg = (e) => {
-    const imgFile = e.target.file[0]
-    const url = window.URL.createObjectURL(imgFile)
+    let imgFile = e.target.files[0]
+    let url = window.URL.createObjectURL(imgFile)
     setUrl(url)
     setImage(imgFile)
+    console.log('imageFile', imgFile)
   }
 
   return (
@@ -25,7 +28,7 @@ const EditableRow = ({
           type='text'
           required={true}
           name='title'
-          defaultValue={editFormData.title}
+          defaultValue={product.title}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
@@ -34,7 +37,7 @@ const EditableRow = ({
           type='text'
           required={true}
           name='description'
-          defaultValue={editFormData.title}
+          defaultValue={product.description}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
@@ -43,7 +46,7 @@ const EditableRow = ({
           type='number'
           required={true}
           name='price'
-          defaultValue={editFormData.title}
+          defaultValue={product.price}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
@@ -53,7 +56,11 @@ const EditableRow = ({
           aria-label='upload picture'
           component='label'
         >
-          {/* <img src={url? url : ''} width='80' height='60' /> */}
+          <img
+            src={url ? url : ''}
+            width='80'
+            height='60'
+          />
           <input
             hidden
             accept='image/*'
@@ -74,7 +81,10 @@ const EditableRow = ({
             color='primary'
           />
         </IconButton>
-        <IconButton type='button'>
+        <IconButton
+          type='button'
+          onClick={handleCancelClick}
+        >
           <ClearOutlinedIcon
             fontSize='large'
             color='primary'
