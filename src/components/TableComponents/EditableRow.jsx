@@ -6,7 +6,6 @@ import { useState } from "react"
 
 const EditableRow = ({
   product,
-  editFormData,
   handleEditFormChange,
   handleEditFormSubmit,
   handleCancelClick

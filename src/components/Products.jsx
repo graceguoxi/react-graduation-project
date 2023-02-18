@@ -22,6 +22,8 @@ import { Button } from '@mui/material'
 import AddRow from './TableComponents/AddRow'
 import EditableRow from './TableComponents/EditableRow'
 import Notification from './TableComponents/Notification'
+import ExportExcel from './TableComponents/ExportExcel'
+import ImportExcel from './TableComponents/ImportExcel'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -204,13 +206,6 @@ export default function EnhancedTable({keyWord}) {
   
   const addTableRow = () => setOnAddRow(!onAddRow)
 
-  const handleEditFormChange=(e) => {
-    e.preventDefault()
-
-    const fieldValue = e.target.value
-    setEditFormData((prevState) => ({...prevState, [e.target.name]: fieldValue}))
-  }
-
   const handleEditClick = (e, product) => {
     e.preventDefault()
     setEditProductId(product.id)
@@ -223,7 +218,16 @@ export default function EnhancedTable({keyWord}) {
     }
 
     setEditFormData(formValues)
+  }
 
+  const handleEditFormChange = (e) => {
+    e.preventDefault()
+
+    const fieldValue = e.target.value
+    setEditFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: fieldValue
+    }))
   }
 
   const handleEditFormSubmit = (e) => {
@@ -249,7 +253,7 @@ export default function EnhancedTable({keyWord}) {
     )
     let config = {
       headers: {
-        Authorization: 'Bearer '  + userToken
+        Authorization: 'Bearer ' + userToken
       }
     }
 
@@ -279,16 +283,44 @@ export default function EnhancedTable({keyWord}) {
   }
 
   const handleDeleteClick = (productId) => {
-    const newProducts = [...products]
-
-    const index = products.findIndex(
-      (product) => product.id === productId
+    const userToken = localStorage.getItem(
+      'react-project-token'
     )
-    console.log('index', index)
-    newProducts.splice(index, 1)
-    setProducts(newProducts)
-    console.log('newPro', newProducts)
-    handleClose()
+    let config = {
+      headers: {
+        Authorization: 'Bearer ' + userToken
+      }
+    }
+
+    axios
+      .delete(
+        `http://localhost:8000/api/products/${productId}`,
+        config
+      )
+      .then((res) => {
+        console.log('deleRes', res.data)
+        const newProducts = [...products]
+
+        const index = products.findIndex(
+          (product) => product.id === productId
+        )
+        console.log('index', index)
+        newProducts.splice(index, 1)
+        setProducts(newProducts)
+        console.log('newPro', newProducts)
+        handleClose()
+      })
+      .catch((err) => console.log(err))
+    // const newProducts = [...products]
+
+    // const index = products.findIndex(
+    //   (product) => product.id === productId
+    // )
+    // console.log('index', index)
+    // newProducts.splice(index, 1)
+    // setProducts(newProducts)
+    // console.log('newPro', newProducts)
+    // handleClose()
   }
 
   const handleClickOpen = (id) => {
@@ -308,18 +340,19 @@ export default function EnhancedTable({keyWord}) {
           padding: '40px 100px 0 100px'
         }}
       >
-        <Button>
-          <AddCircleIcon
-            fontSize='large'
-            onClick={addTableRow}
-          />
-        </Button>
-        <Button>
-          <UploadIcon />
-        </Button>
-        <Button>
-          <DownloadIcon />
-        </Button>
+        <Box sx={{display: 'flex'}}>
+          <Button>
+            <AddCircleIcon
+              fontSize='large'
+              onClick={addTableRow}
+            />
+          </Button>
+          <ImportExcel 
+           products={products}
+           setProducts={setProducts}
+         />
+          <ExportExcel Products={products} />
+        </Box>
 
         <Paper></Paper>
 
@@ -405,7 +438,6 @@ export default function EnhancedTable({keyWord}) {
                               </IconButton>
                               <IconButton
                                 style={avatarStyle}
-                                // onClick={() =>handleDeleteClick(product.id)}
                                 onClick={() => {
                                   handleClickOpen(
                                     product.id

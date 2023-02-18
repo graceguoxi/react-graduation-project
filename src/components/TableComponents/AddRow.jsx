@@ -5,6 +5,7 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
+import axios from 'axios'
 
 const AddRow = ({ products, setProducts, setOnAddRow }) => {
   const [addFormData, setAddFormData] = useState({
@@ -47,10 +48,38 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
       price: addFormData.price
     }
 
-    const newProducts = [newProduct, ...products]
-    console.log('newProducts', newProducts)
-    setProducts(newProducts)
-    setOnAddRow()
+    // const userToken = localStorage.getItem(
+    //   'react-project-token'
+    // )
+
+    // const config = {
+    //   Headers: {
+    //     Authorization: 'Bearer ' + userToken
+    //   }
+    // }
+
+    const userToken = localStorage.getItem(
+      'react-project-token'
+    )
+    let config = {
+      headers: {
+        Authorization: 'Bearer ' + userToken
+      }
+    }
+
+    axios.post('http://localhost:8000/api/products',newProduct, config)
+    .then((res) => {
+      const newProducts = [res.data, ...products]
+      console.log('newProducts', res.data)
+      setProducts(newProducts)
+      setOnAddRow(false)
+    })
+    .catch((err) => console.log(err))
+
+    // const newProducts = [newProduct, ...products]
+    // console.log('newProducts', newProducts)
+    // setProducts(newProducts)
+    // setOnAddRow()
   }
 
   return (
