@@ -135,6 +135,7 @@ export default function EnhancedTable({keyWord}) {
   const [onAddRow, setOnAddRow] = useState(false)
   const [editProductId, setEditProductId] = useState(null)
   const [productId, setProductId] = useState()
+  const [image, setImage] = useState('')
   const [open, setOpen] = useState(false)
   const [editFormData, setEditFormData] = useState({
     id: '',
@@ -231,14 +232,14 @@ export default function EnhancedTable({keyWord}) {
   }
 
   const handleEditFormSubmit = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
 
-    const editedProduct = {
-      id: editFormData.id,
-      title: editFormData.title,
-      description: editFormData.description,
-      price: editFormData.price
-    }
+    // const editedProduct = {
+    //   id: editFormData.id,
+    //   title: editFormData.title,
+    //   description: editFormData.description,
+    //   price: editFormData.price
+    // }
 
     // const newProducts = [...products]
     // const index = products.findIndex((product) => product.id === editFormData.id)
@@ -247,6 +248,16 @@ export default function EnhancedTable({keyWord}) {
 
     // setProducts(newProducts)
     // setEditProductId(null)
+
+    const formData = new FormData()
+    formData.append('title', editFormData.title)
+    editFormData.description && formData.description && formData.append(
+      'description',
+      editFormData.description
+    )
+    formData.append('price', editFormData.price)
+    image && formData.append('product_image', image)
+    
 
     const userToken = localStorage.getItem(
       'react-project-token'
@@ -261,7 +272,7 @@ export default function EnhancedTable({keyWord}) {
       .put(
         'http://localhost:8000/api/product/' +
           editFormData.id,
-        editedProduct,
+        formData,
         config
       )
       .then((res) => {
@@ -403,6 +414,7 @@ export default function EnhancedTable({keyWord}) {
                             handleCancelClick={
                               handleCancelClick
                             }
+                            editFormData={editFormData}
                           />
                         ) : (
                           <TableRow key={product.id}>

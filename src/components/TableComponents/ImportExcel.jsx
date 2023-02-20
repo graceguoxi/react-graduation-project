@@ -4,8 +4,8 @@ import * as XLSX from 'xlsx'
 import { useState } from "react"
 
 const ImportExcel = (
-  products,
-  setProducts
+  {products,
+  setProducts}
 ) => {
 
   const handleImportExcel = (e) => {
@@ -34,8 +34,10 @@ const ImportExcel = (
       )
       console.log('SliceRows', SliceRows)
       setProducts(
-        SliceRows.map((pro) => pro),
+        [
+        ...SliceRows,
         ...products
+      ]
       )
     } 
   }

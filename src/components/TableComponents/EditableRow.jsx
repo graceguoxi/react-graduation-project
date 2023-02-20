@@ -5,6 +5,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from "react"
 
 const EditableRow = ({
+  editFormData,
   product,
   handleEditFormChange,
   handleEditFormSubmit,
@@ -27,7 +28,7 @@ const EditableRow = ({
           type='text'
           required={true}
           name='title'
-          defaultValue={product.title}
+          defaultValue={editFormData.title}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
@@ -36,7 +37,7 @@ const EditableRow = ({
           type='text'
           required={true}
           name='description'
-          defaultValue={product.description}
+          defaultValue={editFormData.description}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
@@ -45,7 +46,7 @@ const EditableRow = ({
           type='number'
           required={true}
           name='price'
-          defaultValue={product.price}
+          defaultValue={editFormData.price}
           onChange={handleEditFormChange}
         ></TextField>
       </TableCell>

@@ -39,14 +39,14 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
   }
 
   const handleAddFormSubmit = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
 
-    const newProduct = {
-      id: nanoid(),
-      title: addFormData.title,
-      description: addFormData.description,
-      price: addFormData.price
-    }
+    // const newProduct = {
+    //   id: nanoid(),
+    //   title: addFormData.title,
+    //   description: addFormData.description,
+    //   price: addFormData.price
+    // }
 
     // const userToken = localStorage.getItem(
     //   'react-project-token'
@@ -58,6 +58,16 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     //   }
     // }
 
+    let formData = new FormData()
+    e.preventDefault()
+    formData.append('title', addFormData.title)
+    addFormData.description && formData.append(
+      'description',
+      addFormData.description
+    )
+    formData.append('price', addFormData.price)
+    img && formData.append('product_image', img)
+
     const userToken = localStorage.getItem(
       'react-project-token'
     )
@@ -67,7 +77,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
       }
     }
 
-    axios.post('http://localhost:8000/api/products',newProduct, config)
+    axios.post('http://localhost:8000/api/products',formData, config)
     .then((res) => {
       const newProducts = [res.data, ...products]
       console.log('newProducts', res.data)
