@@ -11,8 +11,6 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
 import IconButton from '@mui/material/IconButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import UploadIcon from '@mui/icons-material/Upload'
-import DownloadIcon from '@mui/icons-material/Download'
 import ModeIcon from '@mui/icons-material/Mode'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { visuallyHidden } from '@mui/utils'
@@ -141,7 +139,8 @@ export default function EnhancedTable({keyWord}) {
     id: '',
     title: '',
     description: '',
-    price: 0
+    price: ''
+    
   })
 
    const avatarStyle = {
@@ -207,6 +206,10 @@ export default function EnhancedTable({keyWord}) {
   
   const addTableRow = () => setOnAddRow(!onAddRow)
 
+  const handleImageChange = (file) => {
+    setImage(file)
+  }
+
   const handleEditClick = (e, product) => {
     e.preventDefault()
     setEditProductId(product.id)
@@ -215,7 +218,8 @@ export default function EnhancedTable({keyWord}) {
       id: product.id,
       title: product.title,
       description: product.description,
-      price: product.price
+      price: product.price,
+      product_image: product.image
     }
 
     setEditFormData(formValues)
@@ -229,6 +233,17 @@ export default function EnhancedTable({keyWord}) {
       ...prevState,
       [e.target.name]: fieldValue
     }))
+    console.log('editData',editFormData)
+
+
+    // const fieldName = e.target.name
+    // const fieldValue = e.target.value
+    // const newEditData = { ...editFormData }
+    // newEditData[fieldName] = fieldValue
+
+    // setEditFormData(newEditData)
+    // console.log('editForm', newEditData)
+    // console.log('editFormValue',fieldValue)
   }
 
   const handleEditFormSubmit = (e) => {
@@ -249,15 +264,36 @@ export default function EnhancedTable({keyWord}) {
     // setProducts(newProducts)
     // setEditProductId(null)
 
-    const formData = new FormData()
-    formData.append('title', editFormData.title)
-    editFormData.description && formData.description && formData.append(
+    let formData = new FormData()
+    // editFormData.title && formData.append(
+    //   'title',
+    //   editFormData.title
+    // )
+
+    if (editFormData.title){
+      // formData.append('username', 'Chris')
+      // console.log('username', formData.get('username'))
+      formData.append(
+        'title',
+        editFormData.title
+      )
+      console.log('form title', formData.get('title'))
+    }
+      // console.log('title', editFormData.title)
+    editFormData.description && formData.append(
       'description',
       editFormData.description
     )
-    formData.append('price', editFormData.price)
+    editFormData.price && formData.append(
+      'price',
+      editFormData.price
+    )
     image && formData.append('product_image', image)
-    
+    formData.append('_method', 'PUT')
+    console.log('edit',editFormData)
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1])
+    }
 
     const userToken = localStorage.getItem(
       'react-project-token'
@@ -269,7 +305,7 @@ export default function EnhancedTable({keyWord}) {
     }
 
     axios
-      .put(
+      .post(
         'http://localhost:8000/api/product/' +
           editFormData.id,
         formData,
@@ -284,9 +320,11 @@ export default function EnhancedTable({keyWord}) {
 
         newProducts[index] = res.data
         setProducts(newProducts)
+        console.log('newPro', newProducts)
         setEditProductId(null)
       })
       .catch((err) => console.log(err))
+      
   }
 
   const handleCancelClick = () => {
@@ -385,6 +423,9 @@ export default function EnhancedTable({keyWord}) {
                     setOnAddRow={setOnAddRow}
                     products={products}
                     setProducts={setProducts}
+                    image={image}
+                    setImage={setImage}
+                    handleImageChange={(e) => handleImageChange(e)}
                   />
                 )}
 
@@ -404,7 +445,7 @@ export default function EnhancedTable({keyWord}) {
                           <EditableRow
                             key={'edit' + index}
                             product={product}
-                            // editFormData={editFormData}
+                            editFormData={editFormData}
                             handleEditFormChange={
                               handleEditFormChange
                             }
@@ -414,7 +455,10 @@ export default function EnhancedTable({keyWord}) {
                             handleCancelClick={
                               handleCancelClick
                             }
-                            editFormData={editFormData}
+                            image={image}
+                            handleImageChange={
+                              handleImageChange
+                            }
                           />
                         ) : (
                           <TableRow key={product.id}>
@@ -426,17 +470,28 @@ export default function EnhancedTable({keyWord}) {
                             >
                               {product.title}
                             </TableCell>
-                            <TableCell align='center'>
+                            <TableCell
+                              align='center'
+                            >
                               {product.description}
                             </TableCell>
-                            <TableCell align='center'>
+                            <TableCell
+                              align='center'
+                            >
                               {product.price}
                             </TableCell>
-                            <TableCell align='center'>
-                              {product.image}
+                            <TableCell
+                              align='center'
+                            >
+                              {product.product_image && (
+                                <img
+                                  src={`https://localhost:8000/storage/${product.product_image}`}
+                                  width='80'
+                                  height='60'
+                                />
+                              )}
                             </TableCell>
                             <TableCell align='center'>
-                              {product.actions}
                               <IconButton
                                 style={avatarStyle}
                                 onClick={(e) =>

@@ -9,16 +9,27 @@ const EditableRow = ({
   product,
   handleEditFormChange,
   handleEditFormSubmit,
-  handleCancelClick
+  handleCancelClick,
+  handleImageChange
 }) => {
-  const [image, setImage] = useState('')
+  // const [image, setImage] = useState('')
   const [url, setUrl] = useState()
   const showImg = (e) => {
     let imgFile = e.target.files[0]
     let url = window.URL.createObjectURL(imgFile)
     setUrl(url)
-    setImage(imgFile)
+    // setImage(imgFile)
+    handleImageChange(imgFile)
     console.log('imageFile', imgFile)
+  }
+
+  const onTextChange = (e) => {
+    handleEditFormChange(e)
+  }
+
+  const onImgChange = () => {
+    handleImageChange()
+
   }
 
   return (
@@ -29,7 +40,8 @@ const EditableRow = ({
           required={true}
           name='title'
           defaultValue={editFormData.title}
-          onChange={handleEditFormChange}
+          onChange={onTextChange}
+          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -38,7 +50,8 @@ const EditableRow = ({
           required={true}
           name='description'
           defaultValue={editFormData.description}
-          onChange={handleEditFormChange}
+          onChange={onTextChange}
+          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -47,7 +60,8 @@ const EditableRow = ({
           required={true}
           name='price'
           defaultValue={editFormData.price}
-          onChange={handleEditFormChange}
+          onChange={onTextChange}
+          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -55,9 +69,14 @@ const EditableRow = ({
           color='primary'
           aria-label='upload picture'
           component='label'
+          onClick={onImgChange}
         >
           <img
-            src={url ? url : ''}
+            src={
+              url
+                ? url
+                : `https://localhost:8000/storage/${product.product_image}`
+            }
             width='80'
             height='60'
           />
@@ -90,7 +109,7 @@ const EditableRow = ({
             color='primary'
           />
         </IconButton>
-      </TableCell>
+      </TableCell> 
     </TableRow>
   )
 }
