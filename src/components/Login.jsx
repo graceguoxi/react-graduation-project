@@ -2,6 +2,7 @@ import { Avatar, Button, Grid, Paper, TextField } from "@mui/material"
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useState } from "react"
 import axios from "axios"
+import { apiPost } from "./services"
 
 
 const Login = () => {
@@ -21,10 +22,12 @@ const Login = () => {
     e.preventDefault()
     console.log('inputs',inputs)
 
-    axios.post('http://localhost:8000/api/login', inputs)
+    // axios.post('http://localhost:8000/api/login', inputs)
+    apiPost('login', inputs)
     .then(res => {
       console.log(res)
-      localStorage.setItem('react-project-token', res.data.token)
+      // localStorage.setItem('react-project-token', res.data.token)
+      localStorage.setItem('react-project-token', res.data.token.token)
       localStorage.setItem(
         'react-project-user',
         JSON.stringify(res.data.user)

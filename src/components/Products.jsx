@@ -22,6 +22,9 @@ import EditableRow from './TableComponents/EditableRow'
 import Notification from './TableComponents/Notification'
 import ExportExcel from './TableComponents/ExportExcel'
 import ImportExcel from './TableComponents/ImportExcel'
+import { apiDelete, apiGet, apiPost } from './services'
+import { BaseStorageUrl } from '../environment'
+import EnhancedTableHead from './TableComponents/TableHead'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -39,90 +42,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-const headCells = [
-  {
-    id: 'title',
-    numeric: false,
-    disablePadding: true,
-    label: 'Title'
-  },
-  {
-    id: 'description',
-    numeric: true,
-    disablePadding: false,
-    label: 'Description'
-  },
-  {
-    id: 'price',
-    numeric: true,
-    disablePadding: false,
-    label: 'Price'
-  },
-  {
-    id: 'image',
-    numeric: true,
-    disablePadding: false,
-    label: 'Image'
-  },
-  {
-    id: 'actions',
-    numeric: true,
-    disablePadding: false,
-    label: 'Actions'
-  }
-]
-
-function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property)
-  }
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align='center'
-            padding={
-              headCell.disablePadding ? 'none' : 'normal'
-            }
-            sortDirection={
-              orderBy === headCell.id ? order : false
-            }
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={
-                orderBy === headCell.id ? order : 'asc'
-              }
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component='span' sx={visuallyHidden}>
-                  {order === 'desc'
-                    ? 'sorted descending'
-                    : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  )
-}
-
-EnhancedTableHead.propTypes = {
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
-}
-
-export default function EnhancedTable({keyWord}) {
+export default function EnhancedTable({ keyWord }) {
   const [products, setProducts] = useState([])
   const [searchProducts, setSearchProducts] = useState([])
   const [order, setOrder] = useState('asc')
@@ -140,23 +60,21 @@ export default function EnhancedTable({keyWord}) {
     title: '',
     description: '',
     price: ''
-    
   })
 
-   const avatarStyle = {
-     backgroundColor: '#2149e4',
-     color: 'white',
-     margin: '0 10px'
-   }
+  const avatarStyle = {
+    backgroundColor: '#2149e4',
+    color: 'white',
+    margin: '0 10px'
+  }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/api/products')
+    apiGet('products')
       .then((res) => {
         const data = res.data
         setOrigData(data)
         setProducts(data)
-        console.log('data', data)
+        // console.log('data', data)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -164,7 +82,7 @@ export default function EnhancedTable({keyWord}) {
   useEffect(() => {
     setProducts(
       origData.filter((product) => {
-        if(keyWord === '') {
+        if (keyWord === '') {
           return product
         }
       })
@@ -172,13 +90,20 @@ export default function EnhancedTable({keyWord}) {
   }, [keyWord])
 
   useEffect(() => {
-    setSearchProducts(origData.filter((product) => {
-      if(product.title.toLowerCase().includes(keyWord) || product.description.toLowerCase().includes(keyWord))
-      return product
-    }))
+    setSearchProducts(
+      origData.filter((product) => {
+        if (
+          product.title.toLowerCase().includes(keyWord) ||
+          product.description
+            .toLowerCase()
+            .includes(keyWord)
+        )
+          return product
+      })
+    )
     setPage(0)
-  },[keyWord])
-// console.log('search',searchProducts)
+  }, [keyWord])
+  // console.log('search',searchProducts)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -203,7 +128,7 @@ export default function EnhancedTable({keyWord}) {
           (1 + page) * rowsPerPage - products.length
         )
       : 0
-  
+
   const addTableRow = () => setOnAddRow(!onAddRow)
 
   const handleImageChange = (file) => {
@@ -233,8 +158,7 @@ export default function EnhancedTable({keyWord}) {
       ...prevState,
       [e.target.name]: fieldValue
     }))
-    console.log('editData',editFormData)
-
+    console.log('editData', editFormData)
 
     // const fieldName = e.target.name
     // const fieldValue = e.target.value
@@ -270,47 +194,44 @@ export default function EnhancedTable({keyWord}) {
     //   editFormData.title
     // )
 
-    if (editFormData.title){
+    if (editFormData.title) {
       // formData.append('username', 'Chris')
       // console.log('username', formData.get('username'))
-      formData.append(
-        'title',
-        editFormData.title
-      )
+      formData.append('title', editFormData.title)
       console.log('form title', formData.get('title'))
     }
-      // console.log('title', editFormData.title)
-    editFormData.description && formData.append(
-      'description',
-      editFormData.description
-    )
-    editFormData.price && formData.append(
-      'price',
-      editFormData.price
-    )
+    // console.log('title', editFormData.title)
+    editFormData.description &&
+      formData.append(
+        'description',
+        editFormData.description
+      )
+    editFormData.price &&
+      formData.append('price', editFormData.price)
     image && formData.append('product_image', image)
     formData.append('_method', 'PUT')
-    console.log('edit',editFormData)
+    console.log('edit', editFormData)
     for (let pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1])
     }
 
-    const userToken = localStorage.getItem(
-      'react-project-token'
-    )
-    let config = {
-      headers: {
-        Authorization: 'Bearer ' + userToken
-      }
-    }
+    // const userToken = localStorage.getItem(
+    //   'react-project-token'
+    // )
+    // let config = {
+    //   headers: {
+    //     Authorization: 'Bearer ' + userToken
+    //   }
+    // }
 
-    axios
-      .post(
-        'http://localhost:8000/api/product/' +
-          editFormData.id,
-        formData,
-        config
-      )
+    // axios
+    //   .post(
+    //     'http://localhost:8000/api/product/' +
+    //       editFormData.id,
+    //     formData,
+    //     config
+    //   )
+    apiPost(`product/${editFormData.id}`, formData)
       .then((res) => {
         const newProducts = [...products]
         console.log('newProducts', res.data)
@@ -324,28 +245,28 @@ export default function EnhancedTable({keyWord}) {
         setEditProductId(null)
       })
       .catch((err) => console.log(err))
-      
   }
 
   const handleCancelClick = () => {
-    setEditProductId(null);
+    setEditProductId(null)
   }
 
   const handleDeleteClick = (productId) => {
-    const userToken = localStorage.getItem(
-      'react-project-token'
-    )
-    let config = {
-      headers: {
-        Authorization: 'Bearer ' + userToken
-      }
-    }
+    // const userToken = localStorage.getItem(
+    //   'react-project-token'
+    // )
+    // let config = {
+    //   headers: {
+    //     Authorization: 'Bearer ' + userToken
+    //   }
+    // }
 
-    axios
-      .delete(
-        `http://localhost:8000/api/products/${productId}`,
-        config
-      )
+    // axios
+    //   .delete(
+    //     `http://localhost:8000/api/products/${productId}`,
+    //     config
+    //   )
+    apiDelete(`products/${productId}`)
       .then((res) => {
         console.log('deleRes', res.data)
         const newProducts = [...products]
@@ -389,22 +310,19 @@ export default function EnhancedTable({keyWord}) {
           padding: '40px 100px 0 100px'
         }}
       >
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{ display: 'flex' }}>
           <Button>
             <AddCircleIcon
               fontSize='large'
               onClick={addTableRow}
             />
           </Button>
-          <ImportExcel 
-           products={products}
-           setProducts={setProducts}
-         />
+          <ImportExcel
+            products={products}
+            setProducts={setProducts}
+          />
           <ExportExcel Products={products} />
         </Box>
-
-        <Paper></Paper>
-
         <Paper sx={{ width: '100%', mb: 2 }}>
           <TableContainer>
             <Table
@@ -416,6 +334,7 @@ export default function EnhancedTable({keyWord}) {
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
                 rowCount={products.length}
+                setEditProductId={setEditProductId}
               />
               <TableBody>
                 {onAddRow && (
@@ -425,7 +344,9 @@ export default function EnhancedTable({keyWord}) {
                     setProducts={setProducts}
                     image={image}
                     setImage={setImage}
-                    handleImageChange={(e) => handleImageChange(e)}
+                    handleImageChange={(e) =>
+                      handleImageChange(e)
+                    }
                   />
                 )}
 
@@ -470,22 +391,16 @@ export default function EnhancedTable({keyWord}) {
                             >
                               {product.title}
                             </TableCell>
-                            <TableCell
-                              align='center'
-                            >
+                            <TableCell align='center'>
                               {product.description}
                             </TableCell>
-                            <TableCell
-                              align='center'
-                            >
+                            <TableCell align='center'>
                               {product.price}
                             </TableCell>
-                            <TableCell
-                              align='center'
-                            >
+                            <TableCell align='center'>
                               {product.product_image && (
                                 <img
-                                  src={`https://localhost:8000/storage/${product.product_image}`}
+                                  src={`${BaseStorageUrl}${product.product_image}`}
                                   width='80'
                                   height='60'
                                 />
