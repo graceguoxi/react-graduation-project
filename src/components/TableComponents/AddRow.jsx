@@ -11,7 +11,8 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
   const [addFormData, setAddFormData] = useState({
     title: '',
     description: '',
-    price: ''
+    price: '',
+    product_image:''
   })
 
   const [img, setImg] = useState('')

@@ -310,7 +310,7 @@ export default function EnhancedTable({ keyWord }) {
           padding: '40px 100px 0 100px'
         }}
       >
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex'}}>
           <Button>
             <AddCircleIcon
               fontSize='large'
