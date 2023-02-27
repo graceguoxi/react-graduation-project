@@ -3,6 +3,7 @@ import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from "react"
+import { BaseStorageUrl } from "../../environment"
 
 const EditableRow = ({
   editFormData,
@@ -75,7 +76,7 @@ const EditableRow = ({
             src={
               url
                 ? url
-                : `https://localhost:8000/storage/${product.product_image}`
+                : `${BaseStorageUrl}${product.product_image}`
             }
             width='80'
             height='60'
@@ -109,7 +110,7 @@ const EditableRow = ({
             color='primary'
           />
         </IconButton>
-      </TableCell> 
+      </TableCell>
     </TableRow>
   )
 }

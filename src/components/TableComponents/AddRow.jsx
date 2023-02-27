@@ -6,13 +6,14 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import axios from 'axios'
+import { apiPost } from '../services'
 
 const AddRow = ({ products, setProducts, setOnAddRow }) => {
   const [addFormData, setAddFormData] = useState({
+    category_id: '99',
     title: '',
     description: '',
-    price: '',
-    product_image:''
+    price: ''
   })
 
   const [img, setImg] = useState('')
@@ -61,6 +62,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
 
     let formData = new FormData()
     e.preventDefault()
+    formData.append('category_id', 99)
     formData.append('title', addFormData.title)
     addFormData.description && formData.append(
       'description',
@@ -78,14 +80,15 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
       }
     }
 
-    axios.post('http://localhost:8000/api/products',formData, config)
-    .then((res) => {
-      const newProducts = [res.data, ...products]
-      console.log('newProducts', res.data)
-      setProducts(newProducts)
-      setOnAddRow(false)
-    })
-    .catch((err) => console.log(err))
+    // axios.post('http://localhost:8000/api/products',formData, config)
+    apiPost(`products`,formData)
+      .then((res) => {
+        const newProducts = [res.data, ...products]
+        console.log('newProducts', res.data)
+        setProducts(newProducts)
+        setOnAddRow(false)
+      })
+      .catch((err) => console.log(err))
 
     // const newProducts = [newProduct, ...products]
     // console.log('newProducts', newProducts)
