@@ -31,7 +31,7 @@ const onRequest = (config) => {
         // 'Access-Control-Allow-Origin': '*',
         // 'Authorization': 'Bearer ' + userToken,
 
-        //***** spitritx.co.nz:
+        // ***** spitritx.co.nz:
         'token': userToken
       }
     }

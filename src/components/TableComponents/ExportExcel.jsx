@@ -13,15 +13,13 @@ const ExportExcel = ({Products}) => {
   }
 
   return (
-    <div
-     sx={{
-      display:'flex'
-     }}
-    >
-      <IconButton sx={{ px: 1.5 }} color='primary' onClick={() => handleOnExport(Products)}>
+      <IconButton
+        sx={{ px: 1.5, display: 'flex' }}
+        color='primary'
+        onClick={() => handleOnExport(Products)}
+      >
         <DownloadIcon />
       </IconButton>
-    </div>
   )
 }
 export default ExportExcel

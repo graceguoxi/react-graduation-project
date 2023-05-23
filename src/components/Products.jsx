@@ -268,7 +268,7 @@ export default function EnhancedTable({ keyWord }) {
     //   )
     apiDelete(`products/${productId}`)
       .then((res) => {
-        console.log('deleRes', res.data)
+        // console.log('deleRes', res.data)
         const newProducts = [...products]
 
         const index = products.findIndex(

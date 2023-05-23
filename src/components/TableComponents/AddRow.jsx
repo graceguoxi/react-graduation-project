@@ -34,6 +34,9 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     const fieldValue = e.target.value
     const newFormData = { ...addFormData }
     newFormData[fieldName] = fieldValue
+    // newFormData = {
+    //   [fieldName]: fieldValue
+    // }
 
     setAddFormData(newFormData)
     console.log('fieldname', fieldName)

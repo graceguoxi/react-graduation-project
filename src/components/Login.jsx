@@ -7,7 +7,7 @@ import { apiPost } from "./services"
 
 const Login = () => {
   const [inputs, setInputs] = useState({})
-  const paperStyle={padding:20, height:'70vh', width:360, margin:'20px auto'}
+  const paperStyle={padding:20, height:'40vh', width:360, margin:'20px auto'}
   const avatarStyle={backgroundColor:"#1bbd7e"}
   const btnstyle={margin:'20px 0'}
 
@@ -27,8 +27,8 @@ const Login = () => {
     .then(res => {
       console.log(res)
       console.log('token', res.data.token.token)
-      // localStorage.setItem('react-project-token', res.data.token)
-      localStorage.setItem('react-project-token', res.data.token.token)
+      localStorage.setItem('react-project-token', res.data.token)
+      // localStorage.setItem('react-project-token', res.data.token.token)
       localStorage.setItem(
         'react-project-user',
         JSON.stringify(res.data.user)
@@ -56,10 +56,11 @@ const Login = () => {
             name='email'
             id='standard-basic'
             variant='standard'
-            label='email'
+            label='Email'
             placeholder='Enter username'
             fullWidth
             required
+            sx={{ paddingTop: 1, paddingBottom: 3 }}
           />
           <TextField
             onChange={(e) => handleChange(e)}
@@ -71,6 +72,7 @@ const Login = () => {
             type='password'
             fullWidth
             required
+            sx={{ paddingTop: 1, paddingBottom: 3 }}
           />
           <Button
             type='submit'
@@ -84,6 +86,7 @@ const Login = () => {
         </form>
       </Paper>
     </Grid>
+    
   )
 }
 export default Login
