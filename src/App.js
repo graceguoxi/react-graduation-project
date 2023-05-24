@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import './App.css'
 import Login from './components/Login'
-import NavbarNew from './components/Navbar'
 import Products from './components/Products'
 import SearchAppBar from './components/SearchAppBar'
 
@@ -32,7 +31,6 @@ function App() {
         logout={logout}
         user={user}
       />
-      {/* <NavbarNew /> */}
       <Routes>
         {auth ? (
           <Route

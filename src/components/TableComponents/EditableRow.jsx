@@ -66,21 +66,22 @@ const EditableRow = ({
         ></TextField>
       </TableCell>
       <TableCell align='center'>
+        <img
+          src={
+            url
+              ? url
+              : `${BaseStorageUrl}${product.product_image}`
+          }
+          width='80'
+          height='60'
+          style={{ marginTop: '20px' }}
+        />
         <IconButton
           color='primary'
           aria-label='upload picture'
           component='label'
           onClick={onImgChange}
         >
-          <img
-            src={
-              url
-                ? url
-                : `${BaseStorageUrl}${product.product_image}`
-            }
-            width='80'
-            height='60'
-          />
           <input
             hidden
             accept='image/*'
@@ -88,7 +89,10 @@ const EditableRow = ({
             name='product_image'
             onChange={showImg}
           />
-          <PhotoSizeSelectActualIcon fontSize='large' />
+          <PhotoSizeSelectActualIcon
+            fontSize='large'
+            style={{ paddingBottom: '20px' }}
+          />
         </IconButton>
       </TableCell>
       <TableCell align='center'>

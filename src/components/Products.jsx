@@ -1,21 +1,16 @@
-import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
-import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
 import IconButton from '@mui/material/IconButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import ModeIcon from '@mui/icons-material/Mode'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { visuallyHidden } from '@mui/utils'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Button } from '@mui/material'
 import AddRow from './TableComponents/AddRow'
 import EditableRow from './TableComponents/EditableRow'
@@ -74,7 +69,6 @@ export default function EnhancedTable({ keyWord }) {
         const data = res.data
         setOrigData(data)
         setProducts(data)
-        // console.log('data', data)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -103,7 +97,6 @@ export default function EnhancedTable({ keyWord }) {
     )
     setPage(0)
   }, [keyWord])
-  // console.log('search',searchProducts)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -159,48 +152,16 @@ export default function EnhancedTable({ keyWord }) {
       [e.target.name]: fieldValue
     }))
     console.log('editData', editFormData)
-
-    // const fieldName = e.target.name
-    // const fieldValue = e.target.value
-    // const newEditData = { ...editFormData }
-    // newEditData[fieldName] = fieldValue
-
-    // setEditFormData(newEditData)
-    // console.log('editForm', newEditData)
-    // console.log('editFormValue',fieldValue)
   }
 
   const handleEditFormSubmit = (e) => {
-    // e.preventDefault()
-
-    // const editedProduct = {
-    //   id: editFormData.id,
-    //   title: editFormData.title,
-    //   description: editFormData.description,
-    //   price: editFormData.price
-    // }
-
-    // const newProducts = [...products]
-    // const index = products.findIndex((product) => product.id === editFormData.id)
-
-    // newProducts[index] = editedProduct
-
-    // setProducts(newProducts)
-    // setEditProductId(null)
-
     let formData = new FormData()
-    // editFormData.title && formData.append(
-    //   'title',
-    //   editFormData.title
-    // )
 
     if (editFormData.title) {
-      // formData.append('username', 'Chris')
-      // console.log('username', formData.get('username'))
       formData.append('title', editFormData.title)
       console.log('form title', formData.get('title'))
     }
-    // console.log('title', editFormData.title)
+    
     editFormData.description &&
       formData.append(
         'description',
@@ -215,22 +176,6 @@ export default function EnhancedTable({ keyWord }) {
       console.log(pair[0] + ', ' + pair[1])
     }
 
-    // const userToken = localStorage.getItem(
-    //   'react-project-token'
-    // )
-    // let config = {
-    //   headers: {
-    //     Authorization: 'Bearer ' + userToken
-    //   }
-    // }
-
-    // axios
-    //   .post(
-    //     'http://localhost:8000/api/product/' +
-    //       editFormData.id,
-    //     formData,
-    //     config
-    //   )
     apiPost(`product/${editFormData.id}`, formData)
       .then((res) => {
         const newProducts = [...products]
@@ -252,23 +197,8 @@ export default function EnhancedTable({ keyWord }) {
   }
 
   const handleDeleteClick = (productId) => {
-    // const userToken = localStorage.getItem(
-    //   'react-project-token'
-    // )
-    // let config = {
-    //   headers: {
-    //     Authorization: 'Bearer ' + userToken
-    //   }
-    // }
-
-    // axios
-    //   .delete(
-    //     `http://localhost:8000/api/products/${productId}`,
-    //     config
-    //   )
     apiDelete(`products/${productId}`)
       .then((res) => {
-        // console.log('deleRes', res.data)
         const newProducts = [...products]
 
         const index = products.findIndex(
@@ -281,16 +211,6 @@ export default function EnhancedTable({ keyWord }) {
         handleClose()
       })
       .catch((err) => console.log(err))
-    // const newProducts = [...products]
-
-    // const index = products.findIndex(
-    //   (product) => product.id === productId
-    // )
-    // console.log('index', index)
-    // newProducts.splice(index, 1)
-    // setProducts(newProducts)
-    // console.log('newPro', newProducts)
-    // handleClose()
   }
 
   const handleClickOpen = (id) => {
@@ -403,6 +323,7 @@ export default function EnhancedTable({ keyWord }) {
                                   src={`${BaseStorageUrl}${product.product_image}`}
                                   width='80'
                                   height='60'
+                                  alt="product-img"
                                 />
                               )}
                             </TableCell>

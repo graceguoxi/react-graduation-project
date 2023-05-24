@@ -1,13 +1,11 @@
 import { Avatar, Button, Grid, Paper, TextField } from "@mui/material"
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { useState } from "react"
-import axios from "axios"
 import { apiPost } from "./services"
-
 
 const Login = () => {
   const [inputs, setInputs] = useState({})
-  const paperStyle={padding:20, height:'40vh', width:360, margin:'20px auto'}
+  const paperStyle={padding:20, height:'400px', width:360, margin:'20px auto'}
   const avatarStyle={backgroundColor:"#1bbd7e"}
   const btnstyle={margin:'20px 0'}
 

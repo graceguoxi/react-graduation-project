@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
-import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useState } from 'react'
 import Avatar from '@mui/material/Avatar'
@@ -13,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
@@ -167,12 +165,12 @@ export default function SearchAppBar({
                   <Avatar />
                   {user.email}
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                   <Avatar />
                   My account
-                </MenuItem>
+                </MenuItem> */}
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                   <ListItemIcon>
                     <PersonAdd fontSize='small' />
                   </ListItemIcon>
@@ -183,7 +181,7 @@ export default function SearchAppBar({
                     <Settings fontSize='small' />
                   </ListItemIcon>
                   Settings
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={logout}>
                   <ListItemIcon>
                     <Logout fontSize='small' />
