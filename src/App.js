@@ -35,9 +35,7 @@ function App() {
         {auth ? (
           <Route
             path='/'
-            element={
-              <Products keyWord={searchKeyWord} />
-            }
+            element={<Products keyWord={searchKeyWord} />}
           />
         ) : (
           <Route path='/login' element={<Login />} />

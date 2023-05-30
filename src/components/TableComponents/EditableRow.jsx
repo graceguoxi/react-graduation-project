@@ -13,13 +13,11 @@ const EditableRow = ({
   handleCancelClick,
   handleImageChange
 }) => {
-  // const [image, setImage] = useState('')
   const [url, setUrl] = useState()
   const showImg = (e) => {
     let imgFile = e.target.files[0]
     let url = window.URL.createObjectURL(imgFile)
     setUrl(url)
-    // setImage(imgFile)
     handleImageChange(imgFile)
     console.log('imageFile', imgFile)
   }
@@ -42,7 +40,6 @@ const EditableRow = ({
           name='title'
           defaultValue={editFormData.title}
           onChange={onTextChange}
-          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -52,7 +49,6 @@ const EditableRow = ({
           name='description'
           defaultValue={editFormData.description}
           onChange={onTextChange}
-          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>
@@ -62,7 +58,6 @@ const EditableRow = ({
           name='price'
           defaultValue={editFormData.price}
           onChange={onTextChange}
-          // onChange={handleEditFormChange}
         ></TextField>
       </TableCell>
       <TableCell align='center'>

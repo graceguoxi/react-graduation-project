@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import ModeIcon from '@mui/icons-material/Mode'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { Button } from '@mui/material'
 import AddRow from './TableComponents/AddRow'
 import EditableRow from './TableComponents/EditableRow'
@@ -20,6 +20,7 @@ import ImportExcel from './TableComponents/ImportExcel'
 import { apiDelete, apiGet, apiPost } from './services'
 import { BaseStorageUrl } from '../environment'
 import EnhancedTableHead from './TableComponents/TableHead'
+import { Snackbar, Alert } from '@mui/material'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,6 +51,9 @@ export default function EnhancedTable({ keyWord }) {
   const [productId, setProductId] = useState()
   const [image, setImage] = useState('')
   const [open, setOpen] = useState(false)
+  const [opens, setOpens] = useState(false)
+  const [snackContent, setSnackContent] = useState('')
+  const [severity, setSeverity] = useState('success')
   const [editFormData, setEditFormData] = useState({
     id: '',
     title: '',
@@ -63,14 +67,40 @@ export default function EnhancedTable({ keyWord }) {
     margin: '0 10px'
   }
 
+  const SnackbarAlert = forwardRef(
+    function SnackbarAlert(props, ref) {
+      return <Alert elevation={6} ref={ref} {...props} />
+    }
+  )
+
+    const handleSuccess = (content) => {
+      setSnackContent(content)
+      setOpens(true)
+      setSeverity('success')
+    }
+
+    const handleFail = (content) => {
+      setSnackContent(content)
+      setOpens(true)
+      setSeverity('error')
+    }
+
+    const handleClosebar = (e, reason) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setOpens(false)
+    }
+
   useEffect(() => {
     apiGet('products')
       .then((res) => {
         const data = res.data
         setOrigData(data)
         setProducts(data)
+        handleSuccess("Log in successfully!")
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {handleFail(err.message)})
   }, [])
 
   useEffect(() => {
@@ -230,7 +260,7 @@ export default function EnhancedTable({ keyWord }) {
           padding: '40px 100px 0 100px'
         }}
       >
-        <Box sx={{ display: 'flex'}}>
+        <Box sx={{ display: 'flex' }}>
           <Button>
             <AddCircleIcon
               fontSize='large'
@@ -323,7 +353,7 @@ export default function EnhancedTable({ keyWord }) {
                                   src={`${BaseStorageUrl}${product.product_image}`}
                                   width='80'
                                   height='60'
-                                  alt="product-img"
+                                  alt='product-img'
                                 />
                               )}
                             </TableCell>
@@ -397,6 +427,19 @@ export default function EnhancedTable({ keyWord }) {
             handleDeleteClick={handleDeleteClick}
             productId={productId}
           />
+
+          <Snackbar
+            open={opens}
+            autohideduration={3000}
+            onClose={handleClosebar}
+          >
+            <SnackbarAlert
+              onClose={handleClosebar}
+              severity={severity}
+            >
+              {snackContent}
+            </SnackbarAlert>
+          </Snackbar>
         </Paper>
       </Box>
     </>

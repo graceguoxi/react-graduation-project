@@ -4,8 +4,6 @@ import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from 'react'
-import { nanoid } from 'nanoid'
-import axios from 'axios'
 import { apiPost } from '../services'
 
 const AddRow = ({ products, setProducts, setOnAddRow }) => {
