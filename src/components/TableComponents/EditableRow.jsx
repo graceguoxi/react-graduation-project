@@ -70,6 +70,7 @@ const EditableRow = ({
           width='80'
           height='60'
           style={{ marginTop: '20px' }}
+          alt='preview'
         />
         <IconButton
           color='primary'

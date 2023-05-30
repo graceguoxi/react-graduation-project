@@ -10,10 +10,7 @@ import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import PersonAdd from '@mui/icons-material/PersonAdd'
-import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import ClearIcon from '@mui/icons-material/Clear'
 import { useLocation } from 'react-router-dom'
@@ -48,7 +45,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -64,7 +60,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar({
   keyWord,
   onSearch,
-  auth,
   logout,
   user
 }) {
@@ -83,7 +78,7 @@ export default function SearchAppBar({
   }
 
   const handleKeyUp = (e) => {
-    e.keyCode == 27 && onSearch('')
+    e.keyCode === 27 && onSearch('')
   }
 
   const handleClear = () => {
@@ -165,23 +160,7 @@ export default function SearchAppBar({
                   <Avatar />
                   {user.email}
                 </MenuItem>
-                {/* <MenuItem onClick={handleClose}>
-                  <Avatar />
-                  My account
-                </MenuItem> */}
-                <Divider />
-                {/* <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <PersonAdd fontSize='small' />
-                  </ListItemIcon>
-                  Add another account
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <Settings fontSize='small' />
-                  </ListItemIcon>
-                  Settings
-                </MenuItem> */}
+              
                 <MenuItem onClick={logout}>
                   <ListItemIcon>
                     <Logout fontSize='small' />

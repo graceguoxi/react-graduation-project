@@ -24,7 +24,6 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     console.log('img',imgFile)
   }
     
-
   const handleAddFormChange = (e) => {
     e.preventDefault()
 
@@ -32,35 +31,13 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     const fieldValue = e.target.value
     const newFormData = { ...addFormData }
     newFormData[fieldName] = fieldValue
-    // newFormData = {
-    //   [fieldName]: fieldValue
-    // }
-
+ 
     setAddFormData(newFormData)
     console.log('fieldname', fieldName)
     console.log('newFormData', newFormData)
   }
 
   const handleAddFormSubmit = (e) => {
-    // e.preventDefault()
-
-    // const newProduct = {
-    //   id: nanoid(),
-    //   title: addFormData.title,
-    //   description: addFormData.description,
-    //   price: addFormData.price
-    // }
-
-    // const userToken = localStorage.getItem(
-    //   'react-project-token'
-    // )
-
-    // const config = {
-    //   Headers: {
-    //     Authorization: 'Bearer ' + userToken
-    //   }
-    // }
-
     let formData = new FormData()
     e.preventDefault()
     formData.append('category_id', 99)
@@ -81,7 +58,6 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
       }
     }
 
-    // axios.post('http://localhost:8000/api/products',formData, config)
     apiPost(`products`,formData)
       .then((res) => {
         const newProducts = [res.data, ...products]
@@ -90,11 +66,6 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
         setOnAddRow(false)
       })
       .catch((err) => console.log(err))
-
-    // const newProducts = [newProduct, ...products]
-    // console.log('newProducts', newProducts)
-    // setProducts(newProducts)
-    // setOnAddRow()
   }
 
   return (

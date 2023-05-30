@@ -15,7 +15,7 @@ const Notification = ({
         aria-describedby='alert-dialog-description'
       >
         <DialogTitle id='alert-dialog-title'>
-          {'Confirm removal？'}
+          {'Confirm removal?'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'></DialogContentText>

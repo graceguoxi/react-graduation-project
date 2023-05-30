@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import './App.css'
 import Login from './components/Login'
 import Products from './components/Products'
 import SearchAppBar from './components/SearchAppBar'
@@ -27,7 +26,6 @@ function App() {
       <SearchAppBar
         keyWord={searchKeyWord}
         onSearch={setSearchKeyWord}
-        auth={auth}
         logout={logout}
         user={user}
       />

@@ -283,7 +283,6 @@ export default function EnhancedTable({ keyWord }) {
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
-                rowCount={products.length}
                 setEditProductId={setEditProductId}
               />
               <TableBody>

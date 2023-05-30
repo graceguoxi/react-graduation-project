@@ -1,7 +1,6 @@
 import { IconButton } from "@mui/material"
 import UploadIcon from '@mui/icons-material/Upload'
 import * as XLSX from 'xlsx'
-import { useState } from "react"
 
 const ImportExcel = (
   {products,
@@ -22,9 +21,6 @@ const ImportExcel = (
       const workSheet = workbook.Sheets[workSheetName]
 
       const data = XLSX.utils.sheet_to_json(workSheet,{header:1})
-
-      // data.splice(0,1)
-      // console.log('fileData',data)
      
       const SliceRows = data.slice(1).map((r) =>
         r.reduce((acc, x, i) => {
