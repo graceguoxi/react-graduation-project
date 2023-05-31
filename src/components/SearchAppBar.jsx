@@ -184,6 +184,7 @@ export default function SearchAppBar({
           </Typography>
 
           <form>
+            {!isLoginPage && (
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -203,7 +204,7 @@ export default function SearchAppBar({
               >
                 <ClearIcon />
               </IconButton>
-            </Search>
+            </Search>)}
           </form>
         </Toolbar>
       </AppBar>
