@@ -262,7 +262,7 @@ export default function EnhancedTable({ keyWord }) {
     <>
       <Box
         sx={{
-          width: '88%',
+          width: 'auto',
           padding: '40px 100px 0 100px'
         }}
       >
@@ -279,10 +279,10 @@ export default function EnhancedTable({ keyWord }) {
           />
           <ExportExcel Products={products} />
         </Box>
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper sx={{ width: 'auto', mb: 2 }}>
           <TableContainer>
             <Table
-              sx={{ minWidth: 750 }}
+              sx={{ minWidth: 'auto'}}
               aria-labelledby='tableTitle'
             >
               <EnhancedTableHead
