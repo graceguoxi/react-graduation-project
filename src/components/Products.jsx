@@ -218,8 +218,11 @@ export default function EnhancedTable({ keyWord }) {
         setProducts(newProducts)
         console.log('newPro', newProducts)
         setEditProductId(null)
+        handleSuccess('Edit form successfully!')
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        handleFail(err.message)
+      })
   }
 
   const handleCancelClick = () => {
@@ -239,8 +242,11 @@ export default function EnhancedTable({ keyWord }) {
         setProducts(newProducts)
         console.log('newPro', newProducts)
         handleClose()
+        handleSuccess('Delete successfully!')
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        handleFail(err.message)
+      })
   }
 
   const handleClickOpen = (id) => {
@@ -296,6 +302,8 @@ export default function EnhancedTable({ keyWord }) {
                     handleImageChange={(e) =>
                       handleImageChange(e)
                     }
+                    handleSuccess={handleSuccess}
+                    handleFail={handleFail}
                   />
                 )}
 

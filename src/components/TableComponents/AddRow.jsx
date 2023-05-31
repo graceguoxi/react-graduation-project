@@ -6,7 +6,13 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from 'react'
 import { apiPost } from '../services'
 
-const AddRow = ({ products, setProducts, setOnAddRow }) => {
+const AddRow = ({
+  products,
+  setProducts,
+  setOnAddRow,
+  handleSuccess,
+  handleFail
+}) => {
   const [addFormData, setAddFormData] = useState({
     category_id: '99',
     title: '',
@@ -21,9 +27,9 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     let url = window.URL.createObjectURL(imgFile)
     setAddUrl(url)
     setImg(imgFile)
-    console.log('img',imgFile)
+    console.log('img', imgFile)
   }
-    
+
   const handleAddFormChange = (e) => {
     e.preventDefault()
 
@@ -31,7 +37,7 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     const fieldValue = e.target.value
     const newFormData = { ...addFormData }
     newFormData[fieldName] = fieldValue
- 
+
     setAddFormData(newFormData)
     console.log('fieldname', fieldName)
     console.log('newFormData', newFormData)
@@ -42,10 +48,11 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
     e.preventDefault()
     formData.append('category_id', 99)
     formData.append('title', addFormData.title)
-    addFormData.description && formData.append(
-      'description',
-      addFormData.description
-    )
+    addFormData.description &&
+      formData.append(
+        'description',
+        addFormData.description
+      )
     formData.append('price', addFormData.price)
     img && formData.append('product_image', img)
 
@@ -58,14 +65,15 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
       }
     }
 
-    apiPost(`products`,formData)
+    apiPost(`products`, formData)
       .then((res) => {
         const newProducts = [res.data, ...products]
         console.log('newProducts', res.data)
         setProducts(newProducts)
         setOnAddRow(false)
+        handleSuccess('Add form successfully!')
       })
-      .catch((err) => console.log(err))
+      .catch((err) => handleFail(err.message))
   }
 
   return (
@@ -100,7 +108,12 @@ const AddRow = ({ products, setProducts, setOnAddRow }) => {
           component='label'
         >
           {addUrl ? (
-            <img src={addUrl} width='80' height='60' alt='' />
+            <img
+              src={addUrl}
+              width='80'
+              height='60'
+              alt=''
+            />
           ) : (
             ''
           )}
