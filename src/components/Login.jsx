@@ -26,7 +26,7 @@ const Login = () => {
         console.log('token', res.data.token.token)
         localStorage.setItem(
           'react-project-token',
-          res.data.token
+          res.data.token.token
         )
  
         localStorage.setItem(

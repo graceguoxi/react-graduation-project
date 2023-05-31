@@ -230,7 +230,7 @@ export default function EnhancedTable({ keyWord }) {
   }
 
   const handleDeleteClick = (productId) => {
-    apiDelete(`products/${productId}`)
+    apiDelete(`product/${productId}`)
       .then((res) => {
         const newProducts = [...products]
 
@@ -288,6 +288,7 @@ export default function EnhancedTable({ keyWord }) {
               <EnhancedTableHead
                 order={order}
                 orderBy={orderBy}
+                rowCount={products.length}
                 onRequestSort={handleRequestSort}
                 setEditProductId={setEditProductId}
               />
@@ -437,7 +438,7 @@ export default function EnhancedTable({ keyWord }) {
 
           <Snackbar
             open={opens}
-            autohideduration={3000}
+            autoHideDuration={3000}
             onClose={handleClosebar}
           >
             <SnackbarAlert
