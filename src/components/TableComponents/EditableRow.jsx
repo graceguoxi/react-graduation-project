@@ -1,4 +1,4 @@
-import { IconButton, TableCell, TableRow, TextField } from "@mui/material"
+import { IconButton, TableCell, TextField } from "@mui/material"
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
@@ -22,17 +22,13 @@ const EditableRow = ({
     console.log('imageFile', imgFile)
   }
 
-  const onTextChange = (e) => {
-    handleEditFormChange(e)
-  }
+  const onTextChange = (e) => handleEditFormChange(e)
+  
 
-  const onImgChange = () => {
-    handleImageChange()
-
-  }
+  const onImgChange = () => handleImageChange()
 
   return (
-    <TableRow>
+    <>
       <TableCell align='center'>
         <TextField
           type='text'
@@ -111,7 +107,7 @@ const EditableRow = ({
           />
         </IconButton>
       </TableCell>
-    </TableRow>
+    </>
   )
 }
 export default EditableRow

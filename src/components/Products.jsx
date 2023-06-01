@@ -322,7 +322,7 @@ export default function EnhancedTable({ keyWord }) {
                   )
                   .map((product, index) => {
                     return (
-                      <>
+                      <TableRow key={product.id}>
                         {editProductId == product.id ? (
                           <EditableRow
                             key={'edit' + index}
@@ -343,7 +343,7 @@ export default function EnhancedTable({ keyWord }) {
                             }
                           />
                         ) : (
-                          <TableRow key={product.id}>
+                          <>
                             <TableCell
                               align='center'
                               component='th'
@@ -391,9 +391,9 @@ export default function EnhancedTable({ keyWord }) {
                                 <DeleteIcon />
                               </IconButton>
                             </TableCell>
-                          </TableRow>
+                          </>
                         )}
-                      </>
+                      </TableRow>
                     )
                   })}
 
