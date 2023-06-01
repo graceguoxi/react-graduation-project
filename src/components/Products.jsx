@@ -96,6 +96,9 @@ export default function EnhancedTable({ keyWord }) {
     apiGet('products')
       .then((res) => {
         const data = res.data
+        data.map(
+          (prod) => (prod.price = parseInt(prod.price))
+        )
         setOrigData(data)
         setProducts(data)
         handleSuccess("Log in successfully!")
