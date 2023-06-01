@@ -1,9 +1,13 @@
-import { IconButton, TableCell, TextField } from "@mui/material"
+import {
+  IconButton,
+  TableCell,
+  TextField
+} from '@mui/material'
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
-import { useState } from "react"
-import { BaseStorageUrl } from "../../environment"
+import { useState } from 'react'
+import { BaseStorageUrl } from '../../environment'
 
 const EditableRow = ({
   editFormData,
@@ -23,7 +27,6 @@ const EditableRow = ({
   }
 
   const onTextChange = (e) => handleEditFormChange(e)
-  
 
   const onImgChange = () => handleImageChange()
 
@@ -57,17 +60,15 @@ const EditableRow = ({
         ></TextField>
       </TableCell>
       <TableCell align='center'>
-        <img
-          src={
-            url
-              ? url
-              : `${BaseStorageUrl}${product.product_image}`
-          }
-          width='80'
-          height='60'
-          style={{ marginTop: '20px' }}
-          alt='preview'
-        />
+        {product.product_image && (
+          <img
+            src={`${BaseStorageUrl}${product.product_image}`}
+            width='80'
+            height='60'
+            style={{ marginTop: '20px' }}
+            alt='preview'
+          />
+        )}
         <IconButton
           color='primary'
           aria-label='upload picture'
