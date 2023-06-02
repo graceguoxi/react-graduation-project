@@ -93,10 +93,13 @@ const EditableRow = ({
           type='submit'
           onClick={handleEditFormSubmit}
         >
-          <CheckOutlinedIcon
-            fontSize='large'
-            color='primary'
-          />
+          {editFormData.title &&
+            editFormData.description && (
+              <CheckOutlinedIcon
+                fontSize='large'
+                color='primary'
+              />
+            )}
         </IconButton>
         <IconButton
           type='button'

@@ -128,15 +128,25 @@ const AddRow = ({
         </IconButton>
       </TableCell>
       <TableCell align='center'>
-        <IconButton
-          type='submit'
-          onClick={handleAddFormSubmit}
-        >
-          <CheckOutlinedIcon
-            fontSize='large'
-            color='primary'
-          />
-        </IconButton>
+        {addFormData.title && addFormData.description ? (
+          <IconButton
+            type='submit'
+            onClick={handleAddFormSubmit}
+          >
+            <CheckOutlinedIcon
+              fontSize='large'
+              color='primary'
+            />
+          </IconButton>
+        ) : (
+          <IconButton>
+            <CheckOutlinedIcon
+              fontSize='large'
+              color='disabled'
+            />
+          </IconButton>
+        )}
+
         <IconButton
           type='button'
           onClick={() => setOnAddRow()}
