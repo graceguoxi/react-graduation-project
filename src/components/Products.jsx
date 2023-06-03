@@ -21,6 +21,7 @@ import { apiDelete, apiGet, apiPost } from './services'
 import { BaseStorageUrl } from '../environment'
 import EnhancedTableHead from './TableComponents/TableHead'
 import { Snackbar, Alert } from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -273,17 +274,27 @@ export default function EnhancedTable({ keyWord }) {
         }}
       >
         <Box sx={{ display: 'flex' }}>
-          <Button>
-            <AddCircleIcon
-              fontSize='large'
-              onClick={addTableRow}
-            />
-          </Button>
-          <ImportExcel
-            products={products}
-            setProducts={setProducts}
-          />
-          <ExportExcel Products={products} />
+          <Tooltip title='Add' placement='top'>
+            <Button>
+              <AddCircleIcon
+                fontSize='large'
+                onClick={addTableRow}
+              />
+            </Button>
+          </Tooltip>
+          <Tooltip title='Import Excel' placement='top'>
+            <Button>
+              <ImportExcel
+                products={products}
+                setProducts={setProducts}
+              />
+            </Button>
+          </Tooltip>
+          <Tooltip title='Export Excel' placement='top'>
+            <Button>
+              <ExportExcel Products={products} />
+            </Button>
+          </Tooltip>
         </Box>
         <Paper sx={{ width: 'auto', mb: 2 }}>
           <TableContainer>
@@ -374,27 +385,37 @@ export default function EnhancedTable({ keyWord }) {
                               )}
                             </TableCell>
                             <TableCell align='center'>
-                              <IconButton
-                                style={avatarStyle}
-                                onClick={(e) =>
-                                  handleEditClick(
-                                    e,
-                                    product
-                                  )
-                                }
+                              <Tooltip
+                                title='Edit'
+                                placement='left'
                               >
-                                <ModeIcon />
-                              </IconButton>
-                              <IconButton
-                                style={avatarStyle}
-                                onClick={() => {
-                                  handleClickOpen(
-                                    product.id
-                                  )
-                                }}
+                                <IconButton
+                                  style={avatarStyle}
+                                  onClick={(e) =>
+                                    handleEditClick(
+                                      e,
+                                      product
+                                    )
+                                  }
+                                >
+                                  <ModeIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip
+                                title='Delete'
+                                placement='right'
                               >
-                                <DeleteIcon />
-                              </IconButton>
+                                <IconButton
+                                  style={avatarStyle}
+                                  onClick={() => {
+                                    handleClickOpen(
+                                      product.id
+                                    )
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
                             </TableCell>
                           </>
                         )}
