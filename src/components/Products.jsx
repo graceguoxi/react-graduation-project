@@ -39,6 +39,7 @@ function getComparator(order, orderBy) {
 }
 
 export default function EnhancedTable({ keyWord }) {
+  const [disable, setDisable] = useState(true)
   const [products, setProducts] = useState([])
   const [searchProducts, setSearchProducts] = useState([])
   const [order, setOrder] = useState('asc')
@@ -226,10 +227,12 @@ export default function EnhancedTable({ keyWord }) {
       .catch((err) => {
         handleFail(err.message)
       })
+    setDisable(true)
   }
 
   const handleCancelClick = () => {
     setEditProductId(null)
+    setDisable(true)
   }
 
   const handleDeleteClick = (productId) => {
@@ -285,7 +288,7 @@ export default function EnhancedTable({ keyWord }) {
         <Paper sx={{ width: 'auto', mb: 2 }}>
           <TableContainer>
             <Table
-              sx={{ minWidth: 'auto'}}
+              sx={{ minWidth: 'auto' }}
               aria-labelledby='tableTitle'
             >
               <EnhancedTableHead
@@ -341,6 +344,8 @@ export default function EnhancedTable({ keyWord }) {
                             handleImageChange={
                               handleImageChange
                             }
+                            disable={disable}
+                            setDisable={setDisable}
                           />
                         ) : (
                           <>

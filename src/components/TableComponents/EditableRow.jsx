@@ -15,7 +15,9 @@ const EditableRow = ({
   handleEditFormChange,
   handleEditFormSubmit,
   handleCancelClick,
-  handleImageChange
+  handleImageChange,
+  disable,
+  setDisable
 }) => {
   const [url, setUrl] = useState()
   const showImg = (e) => {
@@ -26,9 +28,16 @@ const EditableRow = ({
     console.log('imageFile', imgFile)
   }
 
-  const onTextChange = (e) => handleEditFormChange(e)
+  const onTextChange = (e) => {
+    setDisable(false)
+    handleEditFormChange(e)
+  }
+  console.log('change',disable)
 
-  const onImgChange = () => handleImageChange()
+  const onImgChange = () => {
+    handleImageChange()
+    setDisable(false)
+  }
 
   return (
     <>
@@ -91,15 +100,20 @@ const EditableRow = ({
       <TableCell align='center'>
         <IconButton
           type='submit'
+          disabled={disable}
           onClick={handleEditFormSubmit}
         >
-          {editFormData.title &&
-            editFormData.description && (
+          <CheckOutlinedIcon
+            fontSize='large'
+            color={disable ? 'disabled' : 'primary'}
+          />
+          {/* {editFormData.title &&
+            editFormData.description !== onTextChange && (
               <CheckOutlinedIcon
                 fontSize='large'
                 color='primary'
               />
-            )}
+            )} */}
         </IconButton>
         <IconButton
           type='button'
