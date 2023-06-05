@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material"
+import { Icon } from "@mui/material"
 import UploadIcon from '@mui/icons-material/Upload'
 import * as XLSX from 'xlsx'
 
@@ -39,12 +39,11 @@ const ImportExcel = (
   }
   
   return (
-    <IconButton
+    <Icon
       component='label'
       color='primary'
       sx={{
         display: 'flex',
-        ml: 2
       }}
     >
       <input
@@ -55,7 +54,7 @@ const ImportExcel = (
         }}
       />
       <UploadIcon /> 
-    </IconButton>
+    </Icon>
   )
 }
 export default ImportExcel

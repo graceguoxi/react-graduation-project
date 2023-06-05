@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material"
+import { Icon } from "@mui/material"
 import DownloadIcon from '@mui/icons-material/Download'
 import * as XLSX from 'xlsx'
 
@@ -13,13 +13,13 @@ const ExportExcel = ({Products}) => {
   }
 
   return (
-      <IconButton
+      <Icon
         sx={{ px: 1.5, display: 'flex' }}
         color='primary'
         onClick={() => handleOnExport(Products)}
       >
         <DownloadIcon />
-      </IconButton>
+      </Icon>
   )
 }
 export default ExportExcel
