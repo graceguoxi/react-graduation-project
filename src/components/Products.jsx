@@ -40,6 +40,7 @@ function getComparator(order, orderBy) {
 }
 
 export default function EnhancedTable({ keyWord }) {
+  const [valueChange, setValueChange] = useState(false)
   const [disable, setDisable] = useState(true)
   const [products, setProducts] = useState([])
   const [searchProducts, setSearchProducts] = useState([])
@@ -133,6 +134,19 @@ export default function EnhancedTable({ keyWord }) {
     setPage(0)
   }, [keyWord])
 
+  useEffect(() => {
+    products.map(product => {
+      if (
+        product.id == editFormData.id &&
+        product.title == editFormData.title &&
+        product.description == editFormData.description &&
+        product.price == editFormData.price
+      ) {
+        setDisable(true)
+      }
+    })
+  }, [editFormData])
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -178,15 +192,13 @@ export default function EnhancedTable({ keyWord }) {
     setEditFormData(formValues)
   }
 
-  const handleEditFormChange = (e) => {
+  const handleEditFormChange = (e, products) => {
     e.preventDefault()
 
-    const fieldValue = e.target.value
     setEditFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: fieldValue
+      [e.target.name]: e.target.value
     }))
-    console.log('editData', editFormData)
   }
 
   const handleEditFormSubmit = (e) => {

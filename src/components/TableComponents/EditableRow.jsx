@@ -32,8 +32,7 @@ const EditableRow = ({
     setDisable(false)
     handleEditFormChange(e)
   }
-  console.log('change',disable)
-
+ 
   const onImgChange = () => {
     handleImageChange()
     setDisable(false)
@@ -107,13 +106,6 @@ const EditableRow = ({
             fontSize='large'
             color={disable ? 'disabled' : 'primary'}
           />
-          {/* {editFormData.title &&
-            editFormData.description !== onTextChange && (
-              <CheckOutlinedIcon
-                fontSize='large'
-                color='primary'
-              />
-            )} */}
         </IconButton>
         <IconButton
           type='button'
