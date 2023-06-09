@@ -22,6 +22,8 @@ import { BaseStorageUrl } from '../environment'
 import EnhancedTableHead from './TableComponents/TableHead'
 import { Snackbar, Alert } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
+import TableCategory from './TableComponents/TableCategory'
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -58,6 +60,7 @@ export default function EnhancedTable({ keyWord }) {
   const [snackContent, setSnackContent] = useState('')
   const [severity, setSeverity] = useState('success')
   const [editFormData, setEditFormData] = useState({
+    category_id:'',
     id: '',
     title: '',
     description: '',
@@ -137,6 +140,7 @@ export default function EnhancedTable({ keyWord }) {
   useEffect(() => {
     products.map(product => {
       if (
+        product.category_id == editFormData.category_id &&
         product.id == editFormData.id &&
         product.title == editFormData.title &&
         product.description == editFormData.description &&
@@ -182,6 +186,7 @@ export default function EnhancedTable({ keyWord }) {
     setEditProductId(product.id)
 
     const formValues = {
+      category_id: product.category_id,
       id: product.id,
       title: product.title,
       description: product.description,
@@ -307,6 +312,7 @@ export default function EnhancedTable({ keyWord }) {
               <ExportExcel Products={products} />
             </Button>
           </Tooltip>
+          <TableCategory />
         </Box>
         <Paper sx={{ width: 'auto', mb: 2 }}>
           <TableContainer>
@@ -385,6 +391,9 @@ export default function EnhancedTable({ keyWord }) {
                             </TableCell>
                             <TableCell align='center'>
                               {product.price}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {product.category_id}
                             </TableCell>
                             <TableCell align='center'>
                               {product.product_image && (

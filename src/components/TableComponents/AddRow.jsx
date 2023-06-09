@@ -102,6 +102,14 @@ const AddRow = ({
         />
       </TableCell>
       <TableCell align='center'>
+        <TextField
+          name='category'
+          required={true}
+          placeholder='Enter a categoryId'
+          onChange={handleAddFormChange}
+        />
+      </TableCell>
+      <TableCell align='center'>
         <IconButton
           color='primary'
           aria-label='upload picture'

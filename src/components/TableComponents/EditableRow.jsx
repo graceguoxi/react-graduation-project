@@ -68,6 +68,15 @@ const EditableRow = ({
         ></TextField>
       </TableCell>
       <TableCell align='center'>
+        <TextField
+          type='number'
+          required={true}
+          name='category'
+          defaultValue={editFormData.category_id}
+          onChange={onTextChange}
+        ></TextField>
+      </TableCell>
+      <TableCell align='center'>
         {product.product_image && (
           <img
             src={`${BaseStorageUrl}${product.product_image}`}
