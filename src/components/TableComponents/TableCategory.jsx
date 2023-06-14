@@ -4,6 +4,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import { categorys } from '../../constants'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -16,23 +17,10 @@ const MenuProps = {
   }
 }
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder'
-]
-
-function getStyles(name, personName, theme) {
+function getStyles(category, cateTitle, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      cateTitle.indexOf(category) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   }
@@ -40,13 +28,13 @@ function getStyles(name, personName, theme) {
 
 export default function TableCategory() {
   const theme = useTheme()
-  const [personName, setPersonName] = React.useState([])
+  const [cateTitle, setCateTitle] = React.useState([])
 
   const handleChange = (event) => {
     const {
       target: { value }
     } = event
-    setPersonName(
+    setCateTitle(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     )
@@ -56,9 +44,8 @@ export default function TableCategory() {
     <div>
       <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
         <Select
-          multiple
           displayEmpty
-          value={personName}
+          value={cateTitle}
           onChange={handleChange}
           input={<OutlinedInput />}
           renderValue={(selected) => {
@@ -74,13 +61,13 @@ export default function TableCategory() {
           <MenuItem disabled value=''>
             <em>Category</em>
           </MenuItem>
-          {names.map((name) => (
+          {categorys.map((category) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+              key={category.id}
+              value={category.title}
+              // style={getStyles(category, personName, theme)}
             >
-              {name}
+              {category.title}
             </MenuItem>
           ))}
         </Select>

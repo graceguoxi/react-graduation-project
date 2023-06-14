@@ -23,6 +23,7 @@ import EnhancedTableHead from './TableComponents/TableHead'
 import { Snackbar, Alert } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import TableCategory from './TableComponents/TableCategory'
+import { categorys } from '../constants'
 
 
 function descendingComparator(a, b, orderBy) {
@@ -186,6 +187,7 @@ export default function EnhancedTable({ keyWord }) {
     setEditProductId(product.id)
 
     const formValues = {
+      categoryTitle: category.title,
       category_id: product.category_id,
       id: product.id,
       title: product.title,
@@ -221,6 +223,13 @@ export default function EnhancedTable({ keyWord }) {
       )
     editFormData.price &&
       formData.append('price', editFormData.price)
+    
+    editFormData.category_id &&
+      formData.append(
+        'category',
+        editFormData.category_id
+      )
+
     image && formData.append('product_image', image)
     formData.append('_method', 'PUT')
     console.log('edit', editFormData)
@@ -393,7 +402,7 @@ export default function EnhancedTable({ keyWord }) {
                               {product.price}
                             </TableCell>
                             <TableCell align='center'>
-                              {product.category_id}
+                              {category.title}
                             </TableCell>
                             <TableCell align='center'>
                               {product.product_image && (
