@@ -187,7 +187,6 @@ export default function EnhancedTable({ keyWord }) {
     setEditProductId(product.id)
 
     const formValues = {
-      categoryTitle: category.title,
       category_id: product.category_id,
       id: product.id,
       title: product.title,
@@ -290,6 +289,8 @@ export default function EnhancedTable({ keyWord }) {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const getCategoryTitleById = (id) => categorys.find(category => category.id === id)?.title || null
 
   return (
     <>
@@ -401,8 +402,13 @@ export default function EnhancedTable({ keyWord }) {
                             <TableCell align='center'>
                               {product.price}
                             </TableCell>
+                            {/* {categorys.map((category) => {
+                              <TableCell align='center'>
+                                {category.title}
+                              </TableCell>
+                            })} */}
                             <TableCell align='center'>
-                              {category.title}
+                              {getCategoryTitleById(product.category_id)}
                             </TableCell>
                             <TableCell align='center'>
                               {product.product_image && (
