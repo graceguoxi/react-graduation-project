@@ -65,7 +65,6 @@ export default function TableCategory() {
             <MenuItem
               key={category.id}
               value={category.title}
-              // style={getStyles(category, personName, theme)}
             >
               {category.title}
             </MenuItem>

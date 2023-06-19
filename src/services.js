@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { setupInterceptorsTo } from '../interceptor'
-import { BaseUrl } from '../environment'
+import { setupInterceptorsTo } from './interceptor'
+import { BaseUrl } from './environment'
 
 const axiosInstance = setupInterceptorsTo(axios.create())
 

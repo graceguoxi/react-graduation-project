@@ -1,13 +1,13 @@
-import { Avatar, Button, Grid, Paper, TextField} from "@mui/material"
+import { useState } from 'react'
+import { apiPost } from '../services.js'
+import { Avatar, Button, Grid, Paper, TextField } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { useState } from "react"
-import { apiPost } from "./services"
 
 const Login = () => {
   const [inputs, setInputs] = useState({})
-  const paperStyle={padding:20, height:'400px', width:360, margin:'20px auto'}
-  const avatarStyle={backgroundColor:"#1bbd7e"}
-  const btnstyle={margin:'20px 0'}
+  const paperStyle={ padding: 20, height: '400px', width: 360, margin: '20px auto' }
+  const avatarStyle={ backgroundColor:"#1bbd7e" }
+  const btnstyle={ margin:'20px 0' }
 
   const handleChange = (e) => {
     setInputs(prevState => ({
@@ -18,7 +18,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('inputs',inputs)
 
     apiPost('login', inputs)
       .then((res) => {

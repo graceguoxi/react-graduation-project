@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { styled, alpha } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -5,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -13,8 +14,6 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import IconButton from '@mui/material/IconButton'
 import Logout from '@mui/icons-material/Logout'
 import ClearIcon from '@mui/icons-material/Clear'
-import { useLocation } from 'react-router-dom'
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
