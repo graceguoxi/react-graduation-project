@@ -61,7 +61,7 @@ export default function TableCategory() {
           <MenuItem disabled value=''>
             <em>Category</em>
           </MenuItem>
-          {categorys.map((category) => (
+          {categorys.map(category => (
             <MenuItem
               key={category.id}
               value={category.title}

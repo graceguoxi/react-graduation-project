@@ -385,6 +385,9 @@ export default function EnhancedTable({ keyWord }) {
                             }
                             disable={disable}
                             setDisable={setDisable}
+                            getCategoryTitleById={
+                              getCategoryTitleById
+                            }
                           />
                         ) : (
                           <>
@@ -402,13 +405,10 @@ export default function EnhancedTable({ keyWord }) {
                             <TableCell align='center'>
                               {product.price}
                             </TableCell>
-                            {/* {categorys.map((category) => {
-                              <TableCell align='center'>
-                                {category.title}
-                              </TableCell>
-                            })} */}
                             <TableCell align='center'>
-                              {getCategoryTitleById(product.category_id)}
+                              {getCategoryTitleById(
+                                product.category_id
+                              )}
                             </TableCell>
                             <TableCell align='center'>
                               {product.product_image && (

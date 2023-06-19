@@ -1,5 +1,8 @@
 import {
+  FormControl,
   IconButton,
+  MenuItem,
+  Select,
   TableCell,
   TextField
 } from '@mui/material'
@@ -8,6 +11,7 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useState } from 'react'
 import { BaseStorageUrl } from '../../environment'
+import { categorys } from '../../constants'
 
 const EditableRow = ({
   editFormData,
@@ -17,9 +21,11 @@ const EditableRow = ({
   handleCancelClick,
   handleImageChange,
   disable,
-  setDisable
+  setDisable,
+  getCategoryTitleById
 }) => {
   const [url, setUrl] = useState()
+  const [selectedCategory, setSelectedCategory] = useState(getCategoryTitleById(editFormData.category_id))
   const showImg = (e) => {
     let imgFile = e.target.files[0]
     let url = window.URL.createObjectURL(imgFile)
@@ -32,10 +38,17 @@ const EditableRow = ({
     setDisable(false)
     handleEditFormChange(e)
   }
- 
+
   const onImgChange = () => {
     handleImageChange()
     setDisable(false)
+  }
+
+  const getCategoryId = (categorys, id) => {
+    const category = categorys.find(
+      (category) => category.id === id
+    )
+    return category? category.title : null
   }
 
   return (
@@ -68,13 +81,22 @@ const EditableRow = ({
         ></TextField>
       </TableCell>
       <TableCell align='center'>
-        <TextField
-          type='number'
-          required={true}
-          name='category'
-          defaultValue={editFormData.category_id}
-          onChange={onTextChange}
-        ></TextField>
+        <FormControl sx={{ width: 180 }}>
+          <Select
+            value={selectedCategory}
+            onChange={(event) => setSelectedCategory(event.target.value)}
+            sx={{ textAlign: 'left' }}
+          >
+            {categorys.map((category) => (
+              <MenuItem
+                key={category.id}
+                value={category.title}
+              >
+                {category.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </TableCell>
       <TableCell align='center'>
         {product.product_image && (
