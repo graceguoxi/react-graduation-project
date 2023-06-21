@@ -25,7 +25,6 @@ import Tooltip from '@mui/material/Tooltip'
 import TableCategory from './TableComponents/TableCategory'
 import { categorys } from '../constants'
 
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1
@@ -43,6 +42,13 @@ function getComparator(order, orderBy) {
 }
 
 export default function EnhancedTable({ keyWord }) {
+   const [editFormData, setEditFormData] = useState({
+     category_id: null,
+     id: '',
+     title: '',
+     description: '',
+     price: ''
+   })
   const [valueChange, setValueChange] = useState(false)
   const [disable, setDisable] = useState(true)
   const [products, setProducts] = useState([])
@@ -60,13 +66,6 @@ export default function EnhancedTable({ keyWord }) {
   const [opens, setOpens] = useState(false)
   const [snackContent, setSnackContent] = useState('')
   const [severity, setSeverity] = useState('success')
-  const [editFormData, setEditFormData] = useState({
-    category_id:'',
-    id: '',
-    title: '',
-    description: '',
-    price: ''
-  })
 
   const avatarStyle = {
     backgroundColor: '#2149e4',
@@ -80,24 +79,28 @@ export default function EnhancedTable({ keyWord }) {
     }
   )
 
-    const handleSuccess = (content) => {
-      setSnackContent(content)
-      setOpens(true)
-      setSeverity('success')
-    }
+  const getCategoryTitleById = (id) =>
+    categorys.find((category) => category.id === id)
+      ?.title || null
 
-    const handleFail = (content) => {
-      setSnackContent(content)
-      setOpens(true)
-      setSeverity('error')
-    }
+  const handleSuccess = (content) => {
+    setSnackContent(content)
+    setOpens(true)
+    setSeverity('success')
+  }
 
-    const handleClosebar = (e, reason) => {
-      if (reason === 'clickaway') {
-        return
-      }
-      setOpens(false)
+  const handleFail = (content) => {
+    setSnackContent(content)
+    setOpens(true)
+    setSeverity('error')
+  }
+
+  const handleClosebar = (e, reason) => {
+    if (reason === 'clickaway') {
+      return
     }
+    setOpens(false)
+  }
 
   useEffect(() => {
     apiGet('products')
@@ -207,6 +210,8 @@ export default function EnhancedTable({ keyWord }) {
     }))
   }
 
+  useEffect(() => console.log(editFormData), [editFormData])
+
   const handleEditFormSubmit = (e) => {
     let formData = new FormData()
 
@@ -225,7 +230,7 @@ export default function EnhancedTable({ keyWord }) {
     
     editFormData.category_id &&
       formData.append(
-        'category',
+        'category_id',
         editFormData.category_id
       )
 
@@ -289,8 +294,6 @@ export default function EnhancedTable({ keyWord }) {
   const handleClose = () => {
     setOpen(false)
   }
-
-  const getCategoryTitleById = (id) => categorys.find(category => category.id === id)?.title || null
 
   return (
     <>
@@ -385,8 +388,8 @@ export default function EnhancedTable({ keyWord }) {
                             }
                             disable={disable}
                             setDisable={setDisable}
-                            getCategoryTitleById={
-                              getCategoryTitleById
+                            setEditFormData={
+                              setEditFormData
                             }
                           />
                         ) : (
@@ -407,7 +410,7 @@ export default function EnhancedTable({ keyWord }) {
                             </TableCell>
                             <TableCell align='center'>
                               {getCategoryTitleById(
-                                product.category_id
+                                parseInt(product.category_id)
                               )}
                             </TableCell>
                             <TableCell align='center'>

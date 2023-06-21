@@ -9,12 +9,13 @@ import {
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BaseStorageUrl } from '../../environment'
 import { categorys } from '../../constants'
 
 const EditableRow = ({
   editFormData,
+  setEditFormData,
   product,
   handleEditFormChange,
   handleEditFormSubmit,
@@ -22,10 +23,19 @@ const EditableRow = ({
   handleImageChange,
   disable,
   setDisable,
-  getCategoryTitleById
 }) => {
+    const getCategoryIdByTitle = (title) =>
+    categorys.find(
+      (category) => category.title === title
+    )?.id || null
+
+  const getCategoryTitleById = (id) =>
+    categorys.find((category) => category.id === id)
+      ?.title || null
+
   const [url, setUrl] = useState()
   const [selectedCategory, setSelectedCategory] = useState(getCategoryTitleById(editFormData.category_id))
+
   const showImg = (e) => {
     let imgFile = e.target.files[0]
     let url = window.URL.createObjectURL(imgFile)
@@ -44,11 +54,13 @@ const EditableRow = ({
     setDisable(false)
   }
 
-  const getCategoryId = (categorys, id) => {
-    const category = categorys.find(
-      (category) => category.id === id
-    )
-    return category? category.title : null
+  const handleSelectChange = (e) => {
+    setDisable(false)
+    setSelectedCategory(e.target.value)
+    setEditFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: parseInt(getCategoryIdByTitle(e.target.value))
+    }))
   }
 
   return (
@@ -83,8 +95,12 @@ const EditableRow = ({
       <TableCell align='center'>
         <FormControl sx={{ width: 180 }}>
           <Select
+            name='category_id'
             value={selectedCategory}
-            onChange={(event) => setSelectedCategory(event.target.value)}
+            defaultValue={
+              getCategoryTitleById(editFormData.category_id)
+            }
+            onChange={(e) => handleSelectChange(e)}
             sx={{ textAlign: 'left' }}
           >
             {categorys.map((category) => (
